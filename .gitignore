@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# PyInstaller
+app/build/
+app/dist/
+*.spec.bak
+
+# Runtime data (dibuat otomatis saat jalan)
+app/tes_kompetensi.db
+app/.secret_key
+app/admin_token.txt
+
+# macOS
+.DS_Store

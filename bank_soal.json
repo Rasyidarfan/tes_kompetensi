@@ -1,0 +1,1144 @@
+{
+  "meta": {
+    "judul": "Bank Soal Tes Kompetensi Mitra BPS",
+    "jumlah_paket": 3,
+    "paket": [
+      "9702",
+      "9705",
+      "9706"
+    ],
+    "total_soal": 90,
+    "kategori": [
+      "Aritmatika Dasar",
+      "Analogi Verbal",
+      "Deret dan Pola Angka",
+      "Aritmatika dan Numerik Lanjutan",
+      "Analogi Verbal Lanjutan",
+      "Matematika Terapan dan Soal Cerita",
+      "Penalaran Logis",
+      "Pengetahuan BPS dan Statistik"
+    ]
+  },
+  "bank_soal": {
+    "Aritmatika Dasar": {
+      "jumlah_soal": 6,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "Selisih antara 60 dan 16 adalah ...",
+          "pilihan": {
+            "a": "43",
+            "b": "46",
+            "c": "44",
+            "d": "42",
+            "e": "45"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Hasil dari 48 ÷ 12 adalah ...",
+          "pilihan": {
+            "a": "3",
+            "b": "2",
+            "c": "4",
+            "d": "6",
+            "e": "5"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "(5 + 3) × 2 = ...",
+          "pilihan": {
+            "a": "14",
+            "b": "15",
+            "c": "16",
+            "d": "17",
+            "e": "18"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Selisih antara 36 dan 92 adalah ...",
+          "pilihan": {
+            "a": "-56",
+            "b": "-54",
+            "c": "-58",
+            "d": "-55",
+            "e": "-57"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Berapakah hasil dari 27 + 37?",
+          "pilihan": {
+            "a": "65",
+            "b": "62",
+            "c": "64",
+            "d": "63",
+            "e": "66"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "1.500 + 2.300 − 100 = …",
+          "pilihan": {
+            "a": "3.600",
+            "b": "3.700",
+            "c": "3.800",
+            "d": "3.900",
+            "e": "4.000"
+          },
+          "kunci_jawaban": "B"
+        }
+      ]
+    },
+    "Analogi Verbal": {
+      "jumlah_soal": 6,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "Guru : Sekolah = Dokter : ...",
+          "pilihan": {
+            "a": "Tajam",
+            "b": "Manis",
+            "c": "Basah",
+            "d": "Hangat",
+            "e": "Rumah sakit"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Api : Panas = Es : ...",
+          "pilihan": {
+            "a": "Dingin",
+            "b": "Tajam",
+            "c": "Manis",
+            "d": "Lembut",
+            "e": "Hangat"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Api : Panas = Es : ...",
+          "pilihan": {
+            "a": "Dingin",
+            "b": "Cair",
+            "c": "Beku",
+            "d": "Putih",
+            "e": "Air"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Buku : Membaca = Pisau : ...",
+          "pilihan": {
+            "a": "Memotong",
+            "b": "Memasak",
+            "c": "Menulis",
+            "d": "Menggambar",
+            "e": "Menjahit"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Jika makan terlalu banyak, maka perut sakit. Andi makan terlalu banyak. Maka, ...",
+          "pilihan": {
+            "a": "Perut Andi kenyang",
+            "b": "Perut Andi belum sakit",
+            "c": "Perut Andi sakit",
+            "d": "Perut Andi sehat",
+            "e": "Andi tidak kenyang"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Ibu : Anak = Guru : ...",
+          "pilihan": {
+            "a": "Sekolah",
+            "b": "Murid",
+            "c": "Ilmu",
+            "d": "Pelajar",
+            "e": "Kelas"
+          },
+          "kunci_jawaban": "B"
+        }
+      ]
+    },
+    "Deret dan Pola Angka": {
+      "jumlah_soal": 6,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "3, 5, 7, 5, 7, 9, 7, …",
+          "pilihan": {
+            "a": "7",
+            "b": "8",
+            "c": "9",
+            "d": "10",
+            "e": "11"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "2, 3, 3, 4, 4, 4, 5, 5, 5, 5, …",
+          "pilihan": {
+            "a": "4",
+            "b": "5",
+            "c": "6",
+            "d": "7",
+            "e": "8"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Rina membeli 3 buku seharga Rp11.000 per buku dan 2 pensil Rp3.000 per buah. Berapa total harga yang dibayar Rina?",
+          "pilihan": {
+            "a": "42000",
+            "b": "39000",
+            "c": "36000",
+            "d": "33000",
+            "e": "30000"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "10 ons + 3.000 gram = ... kg",
+          "pilihan": {
+            "a": "4 kg",
+            "b": "5 kg",
+            "c": "6 kg",
+            "d": "3,5 kg",
+            "e": "2 kg"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "100 ons = ... kg",
+          "pilihan": {
+            "a": "10",
+            "b": "100",
+            "c": "1000",
+            "d": "200",
+            "e": "20"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Tentukan keliling persegi panjang dengan ukuran panjang 15 cm dan lebar 9 cm.",
+          "pilihan": {
+            "a": "36 cm",
+            "b": "42 cm",
+            "c": "46 cm",
+            "d": "48 cm",
+            "e": "54 cm"
+          },
+          "kunci_jawaban": "D"
+        }
+      ]
+    },
+    "Aritmatika dan Numerik Lanjutan": {
+      "jumlah_soal": 18,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "3,6 + 4,8 − 3,6 + 4,8 = …",
+          "pilihan": {
+            "a": "4,8",
+            "b": "5,4",
+            "c": "8,4",
+            "d": "9,6",
+            "e": "16,8"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "0,25 × 160 = ...",
+          "pilihan": {
+            "a": "30",
+            "b": "35",
+            "c": "40",
+            "d": "45",
+            "e": "50"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Jika A = 8 dan B = 2, maka nilai A² – B² adalah ...",
+          "pilihan": {
+            "a": "28",
+            "b": "40",
+            "c": "50",
+            "d": "60",
+            "e": "64"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "15% dari 2000 adalah ...",
+          "pilihan": {
+            "a": "200",
+            "b": "250",
+            "c": "275",
+            "d": "300",
+            "e": "350"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "1, 2, 3, 5, 8, 13, ..., ...",
+          "pilihan": {
+            "a": "17, 20",
+            "b": "21, 34",
+            "c": "25, 36",
+            "d": "27, 42",
+            "e": "29, 45"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "52, 54, 58, 64, 72, ...",
+          "pilihan": {
+            "a": "76",
+            "b": "78",
+            "c": "80",
+            "d": "82",
+            "e": "84"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "⅔ dari 120 adalah ...",
+          "pilihan": {
+            "a": "60",
+            "b": "70",
+            "c": "75",
+            "d": "80",
+            "e": "90"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "40% dari 250 sama dengan ...",
+          "pilihan": {
+            "a": "80",
+            "b": "90",
+            "c": "95",
+            "d": "100",
+            "e": "110"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Rata-rata dari 12, 16, 20, dan 24 adalah ...",
+          "pilihan": {
+            "a": "16",
+            "b": "17",
+            "c": "18",
+            "d": "19",
+            "e": "20"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Sebuah mobil menempuh jarak 120 km dalam 3 jam. Kecepatannya adalah ...",
+          "pilihan": {
+            "a": "30 km/jam",
+            "b": "35 km/jam",
+            "c": "40 km/jam",
+            "d": "45 km/jam",
+            "e": "50 km/jam"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Berapakah 25% dari 18/6?",
+          "pilihan": {
+            "a": "0,25",
+            "b": "0,5",
+            "c": "0,75",
+            "d": "1",
+            "e": "1,25"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Usia Kenzo sekarang adalah 154 hari sejak lahir, maka ia lahir pada … yang lalu.",
+          "pilihan": {
+            "a": "19 minggu",
+            "b": "20 minggu",
+            "c": "21 minggu",
+            "d": "22 minggu",
+            "e": "23 minggu"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Dalam 15 hari terdapat … jam.",
+          "pilihan": {
+            "a": "240 jam",
+            "b": "300 jam",
+            "c": "360 jam",
+            "d": "420 jam",
+            "e": "480 jam"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "2,5 = … %",
+          "pilihan": {
+            "a": "2,5",
+            "b": "0,25",
+            "c": "25",
+            "d": "250",
+            "e": "0,025"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Manakah yang lebih besar dari 1?",
+          "pilihan": {
+            "a": "0,8",
+            "b": "1/3",
+            "c": "1,5",
+            "d": "0,99",
+            "e": "2/3"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "2,35 + 4,2 + 5,15 + 3,3 = …",
+          "pilihan": {
+            "a": "14,9",
+            "b": "15,0",
+            "c": "14,85",
+            "d": "15,1",
+            "e": "13,9"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "25 + 25% dari 40 = ...",
+          "pilihan": {
+            "a": "30",
+            "b": "35",
+            "c": "40",
+            "d": "45",
+            "e": "50"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "10/4 - 10/8 = ...",
+          "pilihan": {
+            "a": "1/4",
+            "b": "2/4",
+            "c": "3/4",
+            "d": "1",
+            "e": "5/4"
+          },
+          "kunci_jawaban": "E"
+        }
+      ]
+    },
+    "Analogi Verbal Lanjutan": {
+      "jumlah_soal": 12,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "Buku : Penulis = Lukisan : ...",
+          "pilihan": {
+            "a": "Penerjemah",
+            "b": "Pemain",
+            "c": "Penyair",
+            "d": "Penjahit",
+            "e": "Pelukis"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Pena : Menulis = Keyboard : ...",
+          "pilihan": {
+            "a": "Mengetik",
+            "b": "Menyentuh",
+            "c": "Menggambar",
+            "d": "Mengukur",
+            "e": "Memasak"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Mobil : Bensin = Lampu : ...",
+          "pilihan": {
+            "a": "Kayu",
+            "b": "Api",
+            "c": "Gas",
+            "d": "Listrik",
+            "e": "Energi surya"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Hutan : Pohon = Perpustakaan : ...",
+          "pilihan": {
+            "a": "Katalog",
+            "b": "Buku",
+            "c": "Meja",
+            "d": "Komputer",
+            "e": "Petugas"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Kepala : Pikir = Hati : ...",
+          "pilihan": {
+            "a": "Rasa",
+            "b": "Nafas",
+            "c": "Keringat",
+            "d": "Kaki",
+            "e": "Tangan"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Kata : Kalimat = Kalimat : ...",
+          "pilihan": {
+            "a": "Alinea",
+            "b": "Huruf",
+            "c": "Suara",
+            "d": "Paragraf",
+            "e": "Bacaan"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Jari : Menunjuk = Kaki : ...",
+          "pilihan": {
+            "a": "Berjalan",
+            "b": "Menahan",
+            "c": "Mencakar",
+            "d": "Menari",
+            "e": "Melompat"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Bulan : Satelit = Bumi : ...",
+          "pilihan": {
+            "a": "Komet",
+            "b": "Bintang",
+            "c": "Meteor",
+            "d": "Planet",
+            "e": "Cahaya"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Kepala : Topi = Kaki : ...",
+          "pilihan": {
+            "a": "Sepatu",
+            "b": "Bawah",
+            "c": "Alas",
+            "d": "Sarung",
+            "e": "Dasar"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Dokter : Rumah sakit = Guru : ...",
+          "pilihan": {
+            "a": "Perpustakaan",
+            "b": "Kantor",
+            "c": "Pasar",
+            "d": "Masjid",
+            "e": "Sekolah"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Hari : Minggu = Bulan : ...",
+          "pilihan": {
+            "a": "Tahun",
+            "b": "Minggu",
+            "c": "Dekade",
+            "d": "Musim",
+            "e": "Jam"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Mobil : Roda = Jam : ...",
+          "pilihan": {
+            "a": "Dinding",
+            "b": "Jarum",
+            "c": "Mesin",
+            "d": "Layar",
+            "e": "Baterai"
+          },
+          "kunci_jawaban": "B"
+        }
+      ]
+    },
+    "Matematika Terapan dan Soal Cerita": {
+      "jumlah_soal": 18,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "Suatu pekerjaan dapat diselesaikan oleh 8 orang pekerja dalam waktu 4 hari. Jika jumlah pekerja bertambah menjadi 16 orang, berapa hari pekerjaan dapat diselesaikan?",
+          "pilihan": {
+            "a": "1 hari",
+            "b": "2 hari",
+            "c": "4 hari",
+            "d": "8 hari",
+            "e": "16 hari"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Dalam suatu kelas terdapat 50 siswa. Jika 60% dari siswa tersebut laki-laki, berapa jumlah siswa perempuan di kelas tersebut?",
+          "pilihan": {
+            "a": "20",
+            "b": "25",
+            "c": "30",
+            "d": "35",
+            "e": "40"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "1/4 dari 0,64 = ...",
+          "pilihan": {
+            "a": "0,16",
+            "b": "21%",
+            "c": "35%",
+            "d": "42%",
+            "e": "49%"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "0,015 : 3 =",
+          "pilihan": {
+            "a": "0,0500",
+            "b": "0,0005",
+            "c": "0,5000",
+            "d": "0,0500",
+            "e": "0,0050"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Uang Ayu : uang Cici = 3 : 4. Jumlah uang Ayu adalah Rp 21.000. Berapa rupiah jumlah uang Cici?",
+          "pilihan": {
+            "a": "18.000",
+            "b": "24.000",
+            "c": "28.000",
+            "d": "32.000",
+            "e": "34.000"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "10% dari 1280 adalah …",
+          "pilihan": {
+            "a": "2 pangkat 5",
+            "b": "2 pangkat 6",
+            "c": "2 pangkat 7",
+            "d": "2 pangkat 8",
+            "e": "2 pangkat 9"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Rata-rata 5 bilangan adalah 24. Jika satu bilangan ditambah 10, maka rata-rata baru adalah ...",
+          "pilihan": {
+            "a": "25",
+            "b": "26",
+            "c": "27",
+            "d": "28",
+            "e": "29"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "3 km + 500 m + 4.000 cm = … m",
+          "pilihan": {
+            "a": "3.540 m",
+            "b": "3.940 m",
+            "c": "3.900 m",
+            "d": "3.600 m",
+            "e": "3.450 m"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Pak Rudi bekerja dari pukul 08.00–16.00 setiap hari dengan istirahat 1 jam. Berapa total jam kerja dalam 5 hari kerja?",
+          "pilihan": {
+            "a": "35 jam",
+            "b": "36 jam",
+            "c": "40 jam",
+            "d": "45 jam",
+            "e": "30 jam"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "2 km + 250 m + 5.000 cm = … m",
+          "pilihan": {
+            "a": "2.300 m",
+            "b": "2.750 m",
+            "c": "2.800 m",
+            "d": "3.000 m",
+            "e": "3.500 m"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Rata-rata nilai 4 siswa adalah 80. Jika tiga siswa mendapat nilai 78, 82, dan 79, maka nilai siswa keempat adalah ...",
+          "pilihan": {
+            "a": "81",
+            "b": "80",
+            "c": "83",
+            "d": "82",
+            "e": "85"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Sebuah truk membawa 15 karung beras, masing-masing 40 kg. Jika dibagikan ke 20 orang, setiap orang mendapat ... kg",
+          "pilihan": {
+            "a": "25",
+            "b": "30",
+            "c": "35",
+            "d": "20",
+            "e": "40"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Seorang siswa memperoleh nilai 67, 81, dan 89. Nilai rata-ratanya adalah ...",
+          "pilihan": {
+            "a": "78",
+            "b": "79",
+            "c": "80",
+            "d": "81",
+            "e": "82"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Jika 3x + 9 = 21, maka nilai x adalah?",
+          "pilihan": {
+            "a": "2",
+            "b": "4",
+            "c": "6",
+            "d": "8",
+            "e": "10"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "15% dari 200 ditambah 25% dari 400 = ...",
+          "pilihan": {
+            "a": "115",
+            "b": "120",
+            "c": "125",
+            "d": "130",
+            "e": "135"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "5% dari 2.000 + 10% dari 1.000 = ...",
+          "pilihan": {
+            "a": "180",
+            "b": "190",
+            "c": "200",
+            "d": "210",
+            "e": "220"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Sebuah toko memberi potongan harga 25% untuk barang seharga Rp240.000. Harga setelah diskon adalah ...",
+          "pilihan": {
+            "a": "170000",
+            "b": "175000",
+            "c": "180000",
+            "d": "185000",
+            "e": "190000"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Jika suatu barang dijual 20% di bawah harga beli Rp300.000, maka rugi yang dialami adalah ...",
+          "pilihan": {
+            "a": "50000",
+            "b": "55000",
+            "c": "60000",
+            "d": "65000",
+            "e": "70000"
+          },
+          "kunci_jawaban": "C"
+        }
+      ]
+    },
+    "Penalaran Logis": {
+      "jumlah_soal": 6,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "Air penting bagi kehidupan. Penduduk di daerah tandus memiliki sedikit air. Kesimpulan yang paling rasional adalah …",
+          "pilihan": {
+            "a": "Mereka tidak butuh air.",
+            "b": "Mereka harus berhemat air.",
+            "c": "Mereka hidup tanpa air.",
+            "d": "Air tidak penting di daerah tandus.",
+            "e": "Air tidak termasuk kebutuhan pokok."
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Semua siswa wajib memakai seragam. Tono bukan siswa. Kesimpulan yang sah secara logika adalah ...",
+          "pilihan": {
+            "a": "Tono wajib memakai seragam.",
+            "b": "Tono tidak wajib memakai seragam.",
+            "c": "Tono memiliki seragam.",
+            "d": "Tono tidak suka seragam.",
+            "e": "Tono pasti memakai seragam."
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Pada saat ujian, ibu guru menata 6 kursi berderet dari kiri ke kanan untuk Tia, Udin, Vina, Wira, Xena, dan Yani dengan aturan: Tia tidak bersebelahan dengan Udin dan tidak bersebelahan dengan Vina. Wira bersebelahan dengan Vina. Tia berdekatan dengan Xena, dan Xena juga berdekatan dengan Wira. Udin berdekatan dengan Yani, dan Yani bersebelahan dengan Tia. Vina duduk pada urutan terakhir (paling kanan). Susunan tempat duduk dari kiri ke kanan adalah ...",
+          "pilihan": {
+            "a": "Tia — Xena — Yani — Udin — Wira — Vina",
+            "b": "Udin — Yani — Tia — Xena — Wira — Vina",
+            "c": "Yani — Udin — Tia — Xena — Wira — Vina",
+            "d": "Udin — Tia — Yani — Xena — Wira — Vina",
+            "e": "Xena — Tia — Yani — Udin — Wira — Vina"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Semua mobil memiliki roda dan mesin. Anda berada di tempat yang tidak memiliki roda dan mesin. Kesimpulannya adalah …",
+          "pilihan": {
+            "a": "Anda sedang berada di dalam mobil.",
+            "b": "Anda sedang berada di luar mobil.",
+            "c": "Anda sedang memperbaiki mobil.",
+            "d": "Anda sedang mengemudi mobil.",
+            "e": "Anda sedang membeli mobil."
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Semua karyawan di kantor wajib datang tepat waktu. Rani bukan karyawan. Kesimpulan:",
+          "pilihan": {
+            "a": "Rani tidak wajib datang tepat waktu.",
+            "b": "Rani selalu datang terlambat.",
+            "c": "Rani adalah karyawan yang tidak disiplin.",
+            "d": "Rani diwajibkan datang tepat waktu.",
+            "e": "Rani tetap datang tepat waktu."
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Jennie memiliki 4 saudara. Saat ayah dan ibunya menikah, mereka telah memiliki anak masing-masing tiga anak dan satu anak. Jennie lahir dua tahun setelah ayah dan ibunya menikah. Jumlah saudara Jennie adalah?",
+          "pilihan": {
+            "a": "3",
+            "b": "4",
+            "c": "5",
+            "d": "6",
+            "e": "7"
+          },
+          "kunci_jawaban": "B"
+        }
+      ]
+    },
+    "Pengetahuan BPS dan Statistik": {
+      "jumlah_soal": 18,
+      "soal": [
+        {
+          "paket": "9706",
+          "pertanyaan": "Apa yang dimaksud Indeks Harga Konsumen yang dilaporkan BPS?",
+          "pilihan": {
+            "a": "Indeks harga barang ekspor",
+            "b": "Indeks harga barang impor",
+            "c": "Indeks harga barang grosir",
+            "d": "Indeks harga barang dan jasa yang dikonsumsi rumah tangga",
+            "e": "Indeks harga barang industri"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Apa yang dimaksud Produk Domestik Bruto yang dilaporkan BPS?",
+          "pilihan": {
+            "a": "Nilai total barang dan jasa yang diproduksi di dalam negeri",
+            "b": "Nilai total barang dan jasa yang diekspor",
+            "c": "Nilai total barang dan jasa yang diimpor",
+            "d": "Nilai total barang dan jasa yang dikonsumsi",
+            "e": "Nilai total barang dan jasa yang dijual kembali"
+          },
+          "kunci_jawaban": "A"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "BPS melaksanakan sensus setiap ...",
+          "pilihan": {
+            "a": "1 tahun sekali",
+            "b": "3 tahun sekali",
+            "c": "5 tahun sekali",
+            "d": "10 tahun sekali",
+            "e": "15 tahun sekali"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Salah satu contoh kegiatan sensus yang dilakukan BPS adalah ...",
+          "pilihan": {
+            "a": "Sensus Perusahaan",
+            "b": "Sensus Penduduk",
+            "c": "Sensus Rumah Tangga",
+            "d": "Sensus Perumahan",
+            "e": "Sensus Pajak"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Yang tidak termasuk jenis responden yang didata oleh BPS adalah ...",
+          "pilihan": {
+            "a": "Rumah Tangga",
+            "b": "Usaha/Perusahaan",
+            "c": "Harga",
+            "d": "Area",
+            "e": "Bangunan"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9706",
+          "pertanyaan": "Secara umum, tugas mitra BPS meliputi tahapan ...",
+          "pilihan": {
+            "a": "Pendataan",
+            "b": "Pemeriksaan",
+            "c": "Pendataan dan Pengolahan",
+            "d": "Pendataan dan Pemeriksaan",
+            "e": "Pemeriksaan dan Pengolahan"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Berikut adalah indikator yang dihasilkan dari Survei Harga Konsumen, yaitu ...",
+          "pilihan": {
+            "a": "Indeks Komoditas",
+            "b": "Tingkat Inflasi",
+            "c": "Pengeluaran Perkapita Penduduk",
+            "d": "Jumlah Pengunjung Pasar",
+            "e": "Pendapatan Pedagang"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Berikut adalah indikator yang dihasilkan dari Survei Angkatan Kerja Nasional, yaitu ...",
+          "pilihan": {
+            "a": "Indeks Harga",
+            "b": "Tingkat Inflasi",
+            "c": "Tingkat Partisipasi Angkatan Kerja",
+            "d": "Jumlah Pengunjung Pasar",
+            "e": "Pendapatan Pedagang"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Kegiatan Sensus BPS yang umumnya dilakukan pada tahun berakhiran 3 adalah ...",
+          "pilihan": {
+            "a": "Sensus Pajak",
+            "b": "Sensus Pemerintahan",
+            "c": "Sensus Ekonomi",
+            "d": "Sensus Penduduk",
+            "e": "Sensus Pertanian"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Pendataan utama yang dilakukan BPS dapat dilakukan dalam bentuk sebagai berikut, kecuali ...",
+          "pilihan": {
+            "a": "Wawancara",
+            "b": "Pengukuran",
+            "c": "Pengamatan",
+            "d": "Wawancara dan pengukuran",
+            "e": "Meninggalkan dokumen pada responden"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Kegiatan Survei Ubinan Tanaman Pangan dilakukan melalui ...",
+          "pilihan": {
+            "a": "Wawancara",
+            "b": "Pengukuran",
+            "c": "Pengamatan",
+            "d": "Wawancara dan pengukuran",
+            "e": "Meninggalkan dokumen pada responden"
+          },
+          "kunci_jawaban": "D"
+        },
+        {
+          "paket": "9705",
+          "pertanyaan": "Kegiatan Kerangka Sampel Area dilakukan melalui ...",
+          "pilihan": {
+            "a": "Wawancara",
+            "b": "Pengukuran",
+            "c": "Pengamatan",
+            "d": "Wawancara dan pengukuran",
+            "e": "Meninggalkan dokumen pada responden"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Kegiatan Sensus BPS yang umumnya dilakukan pada tahun berakhiran 3 adalah ...",
+          "pilihan": {
+            "a": "Sensus Pajak",
+            "b": "Sensus Pemerintahan",
+            "c": "Sensus Ekonomi",
+            "d": "Sensus Penduduk",
+            "e": "Sensus Pertanian"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Kegiatan Sensus BPS yang umumnya dilakukan pada tahun berakhiran 6 adalah ...",
+          "pilihan": {
+            "a": "Sensus Pajak",
+            "b": "Sensus Pemerintahan",
+            "c": "Sensus Ekonomi",
+            "d": "Sensus Penduduk",
+            "e": "Sensus Pertanian"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Kegiatan BPS yang memerlukan jumlah mitra yang sangat besar dalam pendataan lapangannya adalah ....",
+          "pilihan": {
+            "a": "Kompilasi",
+            "b": "Rekomendasi",
+            "c": "Survei",
+            "d": "Pendataan",
+            "e": "Sensus"
+          },
+          "kunci_jawaban": "E"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Kegiatan BPS yang umumnya dilakukan pada tahun berakhiran 5 adalah ...",
+          "pilihan": {
+            "a": "Sensus Ekonomi",
+            "b": "Survei Penduduk Antar Sensus",
+            "c": "Survei Pertanian Antar Sensus",
+            "d": "Sensus Penduduk",
+            "e": "Sensus Pajak"
+          },
+          "kunci_jawaban": "B"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Berikut adalah indikator yang dihasilkan dari Survei Sosial Ekonomi Nasional, kecuali ...",
+          "pilihan": {
+            "a": "Persentase Penduduk Miskin",
+            "b": "Persentase Rumah Tangga yang memiliki Atap Genting",
+            "c": "Luas Panen",
+            "d": "Pengeluaran Perkapita Penduduk",
+            "e": "Indeks Kedalaman Kemiskinan"
+          },
+          "kunci_jawaban": "C"
+        },
+        {
+          "paket": "9702",
+          "pertanyaan": "Berikut adalah indikator yang dihasilkan dari Kerangka Sampel Area, yaitu ...",
+          "pilihan": {
+            "a": "Luas panen padi",
+            "b": "Luas panen ubi jalar",
+            "c": "Luas panen kacang tanah",
+            "d": "Luas panen bayam",
+            "e": "Luas panen semangka"
+          },
+          "kunci_jawaban": "A"
+        }
+      ]
+    }
+  }
+}

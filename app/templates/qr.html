@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR Code — Tes Kompetensi</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  width: 100%; height: 100%;
+  background: #1B2B6B;
+  font-family: system-ui, Arial, sans-serif;
+  color: #fff;
+  overflow: hidden;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 28px;
+  padding: 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand img {
+  height: 52px;
+  filter: brightness(0) invert(1);
+}
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.brand-eyebrow {
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #F5C518;
+  font-weight: 700;
+}
+.brand-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.02em;
+}
+
+.qr-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 16px 64px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qr-card img {
+  display: block;
+  /* ukuran QR responsif: 70vmin agar pas di layar besar maupun kecil */
+  width:  min(70vmin, 520px);
+  height: min(70vmin, 520px);
+  image-rendering: pixelated;
+}
+
+.url-label {
+  font-size: clamp(14px, 2.2vw, 20px);
+  font-weight: 700;
+  color: #F5C518;
+  letter-spacing: .01em;
+  text-align: center;
+  word-break: break-all;
+  max-width: 700px;
+}
+
+.hint {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  text-align: center;
+}
+
+/* Tombol ganti URL (muncul saat klik area URL) */
+.url-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: -8px;
+}
+.url-edit input {
+  padding: 8px 14px;
+  border: 2px solid #F5C518;
+  border-radius: 8px;
+  background: #0F1A4A;
+  color: #fff;
+  font-size: 14px;
+  width: min(360px, 80vw);
+  outline: none;
+}
+.url-edit input::placeholder { color: rgba(255,255,255,0.35); }
+.url-edit button {
+  padding: 8px 18px;
+  background: #F5C518;
+  color: #1B2B6B;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+.url-edit button:hover { background: #E0B00C; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <img src="/static/logo.png" alt="BPS">
+    <div class="brand-text">
+      <span class="brand-eyebrow">Badan Pusat Statistik</span>
+      <span class="brand-title">Tes Kompetensi Mitra</span>
+    </div>
+  </div>
+
+  <div class="qr-card">
+    <img id="qr-img" src="" alt="QR Code">
+  </div>
+
+  <div class="url-label" id="url-display"></div>
+
+  <div class="url-edit">
+    <input type="text" id="url-input" placeholder="Ganti URL…">
+    <button onclick="gantiUrl()">Perbarui</button>
+  </div>
+
+  <div class="hint">Scan QR untuk membuka halaman ujian</div>
+</div>
+
+<script>
+function baseUrl() {
+  return window.location.protocol + '//' + window.location.host;
+}
+
+function muatQR(url) {
+  const img = document.getElementById('qr-img');
+  const label = document.getElementById('url-display');
+  img.src = '/api/qr.png?url=' + encodeURIComponent(url);
+  label.textContent = url;
+  document.getElementById('url-input').value = url;
+}
+
+function gantiUrl() {
+  const v = document.getElementById('url-input').value.trim();
+  if (v) muatQR(v);
+}
+
+document.getElementById('url-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') gantiUrl();
+});
+
+// Load QR dari URL server saat ini
+muatQR(baseUrl());
+</script>
+</body>
+</html>
