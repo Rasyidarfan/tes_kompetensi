@@ -210,6 +210,25 @@ tr:hover td{background:#f8fafc}
   .stat-row{grid-template-columns:1fr 1fr}
   .tbl-wrap{font-size:12px}
 }
+
+/* ── SEDANG UJIAN ── */
+.aktif-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;padding:16px}
+.aktif-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px}
+.aktif-card.urgent{border-color:#fca5a5;background:#fff5f5}
+.aktif-nama{font-weight:700;font-size:14px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aktif-nik{font-size:11px;color:#94a3b8;font-family:monospace;margin-bottom:10px}
+.aktif-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.aktif-timer{font-size:22px;font-weight:800;color:#1B2B6B;letter-spacing:.5px}
+.aktif-timer.urgent{color:#dc2626}
+.aktif-progress-wrap{background:#f1f5f9;border-radius:99px;height:6px;margin-bottom:10px;overflow:hidden}
+.aktif-progress{height:6px;border-radius:99px;background:#1B2B6B;transition:width .4s}
+.aktif-soal-info{font-size:11px;color:#64748b;margin-bottom:10px}
+.aktif-actions{display:flex;flex-wrap:wrap;gap:5px}
+.aktif-actions .btn{font-size:11px;padding:4px 9px}
+.aktif-kesempatan{font-size:11px;color:#64748b;margin-left:auto}
+.bulk-bar{padding:12px 16px;border-bottom:1px solid #f1f5f9;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.bulk-bar span{font-size:12px;color:#64748b;font-weight:600;margin-right:4px}
+#nav-aktif-badge{background:#F5C518;color:#1B2B6B;border-radius:99px;font-size:10px;font-weight:800;padding:1px 6px;margin-left:4px;display:none}
 </style>
 </head>
 <body>
@@ -236,6 +255,7 @@ tr:hover td{background:#f8fafc}
   <div class="sidebar">
     <div class="logo">Admin Panel <span>Tes Kompetensi BPS</span></div>
     <div class="nav-item active" onclick="tab('dashboard',this)">Dashboard</div>
+    <div class="nav-item" onclick="tab('aktif',this)">Sedang Ujian <span id="nav-aktif-badge"></span></div>
     <div class="nav-item" onclick="tab('peserta',this)">Data Peserta</div>
     <div class="nav-item" onclick="tab('log',this)">Log Perubahan</div>
     <div class="nav-item" onclick="tab('rekap',this)">Rekap Nilai</div>
@@ -309,6 +329,27 @@ tr:hover td{background:#f8fafc}
               {% endif %}
               </tbody>
             </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SEDANG UJIAN ── -->
+      <div class="panel" id="tab-aktif">
+        <div class="card">
+          <div class="card-head">
+            Peserta Sedang Ujian
+            <span id="aktif-count-badge" style="font-size:11px;font-weight:500;color:#64748b;margin-left:4px"></span>
+            <button class="btn" style="margin-left:auto;font-size:11px" onclick="loadAktif()">↺ Refresh</button>
+          </div>
+          <div class="bulk-bar">
+            <span>Semua:</span>
+            <button class="btn" onclick="sesiCtrl('plus5_all')">+5 menit</button>
+            <button class="btn" onclick="sesiCtrl('minus5_all')">−5 menit</button>
+            <button class="btn" onclick="sesiCtrl('selesai5_all')">Selesai dalam 5 menit</button>
+            <button class="btn btn-danger" onclick="sesiCtrl('reset_all')">Reset Semua</button>
+          </div>
+          <div id="aktif-grid" class="aktif-grid">
+            <div style="padding:32px;text-align:center;color:#94a3b8;font-size:13px;grid-column:1/-1">Memuat…</div>
           </div>
         </div>
       </div>
@@ -1167,6 +1208,189 @@ function tutupKonflik() {
 
 function esc(str) {
   return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ── Sedang Ujian ──
+// State: map nik → sisa_detik (di-tick tiap detik di client)
+let _aktifState = {};       // { nik: { sisa_detik, dijawab, nama, kesempatan, status, sesi_id } }
+let _tickInterval = null;   // setInterval 1 detik
+let _syncInterval = null;   // setInterval 5 menit sync ke server
+let _tabAktif = false;
+
+// Muat otomatis saat tab aktif dibuka
+const _origTabPre = tab;
+tab = function(name, el) {
+  _origTabPre(name, el);
+  if (name === 'aktif') {
+    _tabAktif = true;
+    loadAktif();                                          // langsung ambil dari server
+    if (!_tickInterval) _tickInterval = setInterval(_tick, 1000);
+    if (!_syncInterval) _syncInterval = setInterval(_syncDanTutup, 300000); // sync + tutup habis tiap 5 menit
+  } else {
+    _tabAktif = false;
+    clearInterval(_tickInterval); _tickInterval = null;
+    clearInterval(_syncInterval); _syncInterval = null;
+  }
+};
+
+function fmtTimer(det) {
+  if (det == null || det < 0) det = 0;
+  const m = Math.floor(det / 60).toString().padStart(2,'0');
+  const s = (det % 60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+// Tick tiap detik: kurangi sisa_detik di state, update DOM, cek habis
+function _tick() {
+  let adaHabis = false;
+  for (const nik of Object.keys(_aktifState)) {
+    const p = _aktifState[nik];
+    if (p.status === 'berlangsung' && p.sisa_detik > 0) {
+      p.sisa_detik--;
+    }
+    if (p.status === 'berlangsung' && p.sisa_detik <= 0) {
+      adaHabis = true;
+    }
+    _updateCard(nik);
+  }
+  // Jika ada yang habis: kirim tutup_habis ke server lalu refresh tampilan
+  if (adaHabis) _tutupHabisDanRefresh();
+}
+
+async function _tutupHabisDanRefresh() {
+  await fetch('/api/admin/sesi_ctrl', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': ADMIN_TOKEN },
+    body: JSON.stringify({ aksi: 'tutup_habis' })
+  });
+  loadAktif();
+}
+
+// Sync 5 menit: tutup sesi habis dulu, lalu ambil data segar
+async function _syncDanTutup() {
+  await fetch('/api/admin/sesi_ctrl', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': ADMIN_TOKEN },
+    body: JSON.stringify({ aksi: 'tutup_habis' })
+  });
+  loadAktif();
+}
+
+// Update satu kartu DOM tanpa re-render seluruh grid
+function _cardId(nik) { return 'aktif-card-' + nik.replace(/\W/g, '_'); }
+
+function _updateCard(nik) {
+  const p = _aktifState[nik];
+  if (!p) return;
+  const urgent = p.sisa_detik <= 300;
+  const card = document.getElementById(_cardId(nik));
+  if (!card) return;
+
+  const timerEl = card.querySelector('.aktif-timer');
+  if (timerEl) {
+    timerEl.textContent = fmtTimer(p.sisa_detik);
+    timerEl.className = 'aktif-timer' + (urgent ? ' urgent' : '');
+  }
+  card.className = 'aktif-card' + (urgent ? ' urgent' : '');
+
+  const btn5 = card.querySelector('.btn-selesai5');
+  if (btn5) {
+    btn5.disabled = p.sisa_detik <= 300;
+    btn5.style.opacity = p.sisa_detik <= 300 ? '0.4' : '';
+    btn5.style.cursor = p.sisa_detik <= 300 ? 'not-allowed' : '';
+    btn5.title = p.sisa_detik <= 300 ? 'Sisa waktu sudah ≤ 5 menit' : '';
+  }
+}
+
+async function loadAktif() {
+  const resp = await fetch('/api/admin/aktif', { headers: { 'X-Admin-Token': ADMIN_TOKEN } });
+  const data = await resp.json();
+
+  // Perbarui badge sidebar
+  const badge = document.getElementById('nav-aktif-badge');
+  if (data.length > 0) { badge.textContent = data.length; badge.style.display = 'inline'; }
+  else { badge.style.display = 'none'; }
+  document.getElementById('aktif-count-badge').textContent =
+    data.length ? `(${data.length} peserta)` : '';
+
+  const grid = document.getElementById('aktif-grid');
+  if (!data.length) {
+    _aktifState = {};
+    grid.innerHTML = '<div style="padding:32px;text-align:center;color:#94a3b8;font-size:13px;grid-column:1/-1">Tidak ada peserta yang sedang ujian.</div>';
+    return;
+  }
+
+  // Sinkronkan state: pertahankan sisa_detik client jika masih fresh (< 5 mnt sejak sync),
+  // ganti jika server lebih kecil (server adalah otoritas)
+  const newNiks = new Set(data.map(p => p.nik));
+  // Hapus peserta yang sudah tidak aktif
+  for (const nik of Object.keys(_aktifState)) {
+    if (!newNiks.has(nik)) delete _aktifState[nik];
+  }
+  for (const p of data) {
+    const existing = _aktifState[p.nik];
+    // Pakai nilai server jika: pertama kali, atau server lebih kecil (lebih akurat), atau selisih > 10 dtk
+    if (!existing || p.sisa_detik < existing.sisa_detik || Math.abs(existing.sisa_detik - p.sisa_detik) > 10) {
+      _aktifState[p.nik] = { ...p };
+    } else {
+      // Pertahankan hitungan client, update data lain
+      _aktifState[p.nik] = { ...p, sisa_detik: existing.sisa_detik };
+    }
+  }
+
+  // Re-render grid (pertahankan kartu yang sudah ada jika masih relevan)
+  grid.innerHTML = data.map(p => buildAktifCard(_aktifState[p.nik])).join('');
+}
+
+function buildAktifCard(p) {
+  const urgent = p.sisa_detik <= 300;
+  const pct = Math.round(p.dijawab / 30 * 100);
+  const btn5Disabled = p.sisa_detik <= 300;
+  return `
+  <div class="aktif-card${urgent ? ' urgent' : ''}" id="aktif-card-${p.nik.replace(/\W/g,'_')}">
+    <div class="aktif-nama">${esc(p.nama)}</div>
+    <div class="aktif-nik">${esc(p.nik)}</div>
+    <div class="aktif-row">
+      <div>
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:2px">SISA WAKTU</div>
+        <div class="aktif-timer${urgent ? ' urgent' : ''}">${fmtTimer(p.sisa_detik)}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;color:#94a3b8;margin-bottom:2px">DIJAWAB</div>
+        <div style="font-weight:700;font-size:18px;color:#1B2B6B">${p.dijawab}<span style="font-size:12px;font-weight:400;color:#94a3b8">/30</span></div>
+      </div>
+    </div>
+    <div class="aktif-progress-wrap">
+      <div class="aktif-progress" style="width:${pct}%;${urgent?'background:#dc2626':''}"></div>
+    </div>
+    <div class="aktif-soal-info">Ke-${p.kesempatan} · ${p.status === 'berlangsung' ? 'Berlangsung' : 'Memuat soal…'}</div>
+    <div class="aktif-actions">
+      <button class="btn" onclick="sesiCtrl('plus5','${esc(p.nik)}')">+5 min</button>
+      <button class="btn" onclick="sesiCtrl('minus5','${esc(p.nik)}')">−5 min</button>
+      <button class="btn btn-selesai5" onclick="sesiCtrl('selesai5','${esc(p.nik)}')"
+        ${btn5Disabled ? 'disabled style="opacity:0.4;cursor:not-allowed"' : ''}
+        title="${btn5Disabled ? 'Sisa waktu sudah ≤ 5 menit' : ''}">5 menit lagi</button>
+      <button class="btn btn-danger" onclick="sesiCtrl('reset','${esc(p.nik)}','${esc(p.nama)}')">Reset</button>
+    </div>
+  </div>`;
+}
+
+async function sesiCtrl(aksi, nik, nama) {
+  if (aksi === 'reset' && !confirm(`Reset sesi ${nama || nik}?`)) return;
+  if (aksi === 'reset_all' && !confirm('Reset SEMUA sesi yang sedang berlangsung?')) return;
+  // selesai5_all: hanya jalankan untuk yang sisa > 5 menit (server sudah filter, tapi filter juga di client)
+  if (aksi === 'selesai5_all') {
+    const adaYangBisa = Object.values(_aktifState).some(p => p.sisa_detik > 300);
+    if (!adaYangBisa) { alert('Semua peserta sudah memiliki sisa waktu ≤ 5 menit.'); return; }
+  }
+
+  await fetch('/api/admin/sesi_ctrl', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Token': ADMIN_TOKEN },
+    body: JSON.stringify({ aksi, nik })
+  });
+  // Setelah aksi, sync dari server agar state akurat
+  await loadAktif();
 }
 
 // ── Charts ──

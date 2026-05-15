@@ -1,6 +1,8 @@
 # Tes Kompetensi Mitra BPS
 
-Aplikasi ujian kompetensi berbasis web untuk mitra survei BPS. Dijalankan sebagai server lokal (Flask + Waitress) dan diakses peserta melalui browser di jaringan yang sama.
+Aplikasi ujian kompetensi berbasis web untuk mitra survei BPS. Dijalankan sebagai server lokal dan diakses peserta melalui browser di jaringan yang sama.
+
+Tersedia dalam dua versi: **Python/Flask** (`app/`) dan **PHP** (`app-php/`), dengan fitur dan tampilan yang identik.
 
 ---
 
@@ -8,9 +10,11 @@ Aplikasi ujian kompetensi berbasis web untuk mitra survei BPS. Dijalankan sebaga
 
 - **Peserta** — daftar dengan NIK, kerjakan ujian 30 soal dengan timer 45 menit, maksimal 2 kesempatan
 - **Admin** — dashboard nilai, data peserta, rekap per-kategori, kelola bank soal (tambah/edit/hapus/export/import)
+- **Sedang Ujian** — pantau sisa waktu peserta aktif secara real-time, tambah/kurangi waktu, percepat selesai
 - **Bank soal** — disimpan di SQLite, diambil acak 1/3 per-kategori setiap sesi
-- **QR Code** — halaman full-screen `/qr` untuk menampilkan URL server ke peserta
-- **Auto port** — scan otomatis port 8000–8080 saat startup
+- **Sinkronisasi** — impor data peserta dari API BPS (mitra-api.bps.go.id)
+- **QR Code** — halaman full-screen `/qr` untuk menampilkan URL server ke peserta *(Flask only)*
+- **Auto port** — scan otomatis port 8000–8080 saat startup *(Flask only)*
 
 ---
 
@@ -19,27 +23,42 @@ Aplikasi ujian kompetensi berbasis web untuk mitra survei BPS. Dijalankan sebaga
 ```
 tes-kompetensi/
 ├── bank_soal.json          # Sumber soal awal (diimpor ke DB saat pertama jalan)
-└── app/
-    ├── app.py              # Aplikasi Flask utama
-    ├── database.py         # Skema SQLite, logika soal & sesi
-    ├── requirements.txt
-    ├── app.spec            # Konfigurasi PyInstaller
-    ├── build_windows.bat   # Script build Windows .exe
-    ├── static/             # Asset statis (Chart.js, font, logo)
-    └── templates/          # HTML (index, admin, qr)
+├── README.md
+│
+├── app/                    # Versi Python/Flask
+│   ├── app.py              # Aplikasi Flask utama (route + logika)
+│   ├── database.py         # Skema SQLite, logika soal & sesi
+│   ├── requirements.txt
+│   ├── app.spec            # Konfigurasi PyInstaller
+│   ├── build_windows.bat   # Script build Windows .exe
+│   ├── static/             # Asset statis (Chart.js, font, logo)
+│   └── templates/          # HTML (index, admin, qr)
+│
+└── app-php/                # Versi PHP
+    ├── index.php           # Router utama (semua request masuk ke sini)
+    ├── db.php              # Database layer (SQLite3)
+    ├── auth.php            # Token admin & helper
+    ├── .htaccess           # Routing Apache (mod_rewrite)
+    ├── router.php          # Router untuk php -S (built-in server)
+    ├── halaman_peserta.php # Frontend peserta
+    ├── admin.php           # Panel admin
+    ├── api/                # Endpoint API (15 file)
+    └── static/             # Symlink ke app/static/
 ```
 
-File yang dibuat otomatis saat pertama kali dijalankan (di folder yang sama dengan `app.py` / `.exe`):
+File yang dibuat otomatis saat pertama kali dijalankan:
 
 | File | Keterangan |
 |---|---|
 | `tes_kompetensi.db` | Database SQLite (peserta, sesi, jawaban, soal) |
-| `.secret_key` | Kunci sesi Flask (dibuat acak sekali) |
-| `admin_token.txt` | Token login admin |
+| `.secret_key` | Kunci token admin (dibuat acak sekali) |
+| `admin_token.txt` | Token BPS API terakhir dipakai (opsional) |
 
 ---
 
-## Menjalankan (Mode Development)
+## Versi Python/Flask
+
+### Menjalankan (Development)
 
 ```bash
 cd app
@@ -50,9 +69,7 @@ python3 app.py
 
 Server otomatis memilih port tersedia di rentang 8000–8080. URL ditampilkan di terminal.
 
----
-
-## Build Windows .exe
+### Build Windows .exe
 
 Jalankan di mesin Windows:
 
@@ -67,24 +84,59 @@ Saat pertama kali dijalankan di komputer baru, letakkan `bank_soal.json` di fold
 
 ---
 
+## Versi PHP
+
+### Kebutuhan
+
+- PHP 8.1+ dengan ekstensi `sqlite3`
+- Apache dengan `mod_rewrite` **atau** PHP built-in server
+
+### Menjalankan dengan PHP built-in server
+
+```bash
+cd app-php
+php -S 0.0.0.0:8080 router.php
+```
+
+### Menjalankan dengan Apache
+
+Letakkan folder `app-php/` di dalam `DocumentRoot` (misalnya `/var/www/html/`), pastikan `mod_rewrite` aktif dan `AllowOverride All` diset untuk direktori tersebut. File `.htaccess` menangani routing secara otomatis.
+
+### Membuat symlink static assets (jika belum ada)
+
+```bash
+cd app-php
+ln -s ../app/static static
+```
+
+---
+
 ## Login Admin
 
 1. Buka `http://<ip-server>:<port>/admin`
-2. Token tersedia di file `admin_token.txt` di folder yang sama dengan `app.py` / `.exe`
+2. Masukkan password (default: `1qazxsw2`)
+
+Token admin di-*inject* langsung ke halaman setelah login berhasil — tidak perlu melihat file `admin_token.txt`.
 
 ---
 
 ## Konfigurasi
 
-Edit `database.py` untuk mengubah parameter ujian:
+Edit konstanta berikut untuk mengubah parameter ujian:
 
+**Python** — `database.py`:
 ```python
-DURASI_DETIK  = 45 * 60   # Durasi ujian (detik)
-MAX_KESEMPATAN = 2         # Maksimal percobaan per peserta
-SOAL_PER_UJIAN = 30        # Jumlah soal per sesi (penyebut skor)
+DURASI_DETIK   = 45 * 60   # Durasi ujian (detik)
+MAX_KESEMPATAN = 2          # Maksimal percobaan per peserta
+SOAL_PER_UJIAN = 30         # Jumlah soal per sesi (penyebut skor)
 ```
 
-Urutan dan nama kategori soal ada di `KATEGORI_URUTAN`.
+**PHP** — `app-php/db.php`:
+```php
+define('DURASI_DETIK',   45 * 60);
+define('MAX_KESEMPATAN', 2);
+define('SOAL_PER_UJIAN', 30);
+```
 
 ---
 

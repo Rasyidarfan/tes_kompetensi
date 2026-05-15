@@ -4,7 +4,7 @@ import sys
 import time
 import hashlib
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import Flask, request, jsonify, render_template, session
 from flask_cors import CORS
 from database import (
@@ -598,7 +598,153 @@ def ujian_selesai():
     })
 
 
-# --- Admin: reset sesi untuk testing (bisa dihapus di produksi) ---
+@app.route("/api/admin/aktif")
+def admin_aktif():
+    """Daftar sesi yang sedang berlangsung/mulai dengan progress dan sisa waktu."""
+    err = require_admin()
+    if err: return err
+    conn = get_db()
+    rows = conn.execute("""
+        SELECT s.id, s.nik, s.kesempatan, s.status, s.mulai_at, s.sisa_detik,
+               p.nama_lengkap
+        FROM sesi_ujian s
+        JOIN peserta p ON p.nik = s.nik
+        WHERE s.status IN ('mulai','berlangsung')
+        ORDER BY s.mulai_at
+    """).fetchall()
+    result = []
+    now = datetime.now()
+    for r in rows:
+        if r["status"] == "berlangsung" and r["mulai_at"]:
+            elapsed = (now - datetime.fromisoformat(r["mulai_at"])).total_seconds()
+            sisa = max(0, DURASI_DETIK - int(elapsed))
+        else:
+            sisa = DURASI_DETIK
+        dijawab = conn.execute(
+            "SELECT COUNT(*) FROM jawaban WHERE sesi_id=?", (r["id"],)
+        ).fetchone()[0]
+        result.append({
+            "sesi_id": r["id"],
+            "nik": r["nik"],
+            "nama": r["nama_lengkap"] or r["nik"],
+            "kesempatan": r["kesempatan"],
+            "status": r["status"],
+            "dijawab": dijawab,
+            "sisa_detik": sisa,
+        })
+    conn.close()
+    return jsonify(result)
+
+
+@app.route("/api/admin/sesi_ctrl", methods=["POST"])
+def admin_sesi_ctrl():
+    """Kontrol sesi aktif: reset, +5min, -5min, selesai_5min, *_all."""
+    err = require_admin()
+    if err: return err
+    body = request.get_json(force=True)
+    aksi = body.get("aksi")          # reset | plus5 | minus5 | selesai5 | reset_all | plus5_all | minus5_all
+    nik  = body.get("nik")           # diisi untuk aksi per-peserta
+    conn = get_db()
+    now  = datetime.now()
+
+    def _geser_waktu(sesi_id, delta_detik):
+        """Geser mulai_at agar sisa waktu bertambah/berkurang delta_detik."""
+        row = conn.execute(
+            "SELECT mulai_at, status FROM sesi_ujian WHERE id=?", (sesi_id,)
+        ).fetchone()
+        if not row or row["status"] not in ("mulai", "berlangsung"):
+            return
+        if row["mulai_at"]:
+            mulai = datetime.fromisoformat(row["mulai_at"])
+            mulai_baru = mulai - timedelta(seconds=delta_detik)  # mundur = +waktu, maju = -waktu
+            # Jaga agar sisa waktu tidak melebihi DURASI_DETIK
+            min_mulai = now - timedelta(seconds=DURASI_DETIK)
+            if mulai_baru < min_mulai:
+                mulai_baru = min_mulai
+            conn.execute(
+                "UPDATE sesi_ujian SET mulai_at=? WHERE id=?",
+                (mulai_baru.strftime("%Y-%m-%d %H:%M:%S"), sesi_id)
+            )
+
+    def _selesai_5_menit(sesi_id):
+        """Geser mulai_at agar sisa waktu menjadi tepat 5 menit."""
+        mulai_baru = now - timedelta(seconds=DURASI_DETIK - 300)
+        conn.execute(
+            "UPDATE sesi_ujian SET mulai_at=? WHERE id=?",
+            (mulai_baru.strftime("%Y-%m-%d %H:%M:%S"), sesi_id)
+        )
+
+    def _reset_satu(nik_val):
+        ids = [r[0] for r in conn.execute(
+            "SELECT id FROM sesi_ujian WHERE nik=?", (nik_val,)
+        ).fetchall()]
+        for sid in ids:
+            conn.execute("DELETE FROM jawaban WHERE sesi_id=?", (sid,))
+        conn.execute("DELETE FROM sesi_ujian WHERE nik=?", (nik_val,))
+
+    def _get_aktif_ids():
+        return [r[0] for r in conn.execute(
+            "SELECT id FROM sesi_ujian WHERE status IN ('mulai','berlangsung')"
+        ).fetchall()]
+
+    def _get_aktif_niks():
+        return [r[0] for r in conn.execute(
+            "SELECT nik FROM sesi_ujian WHERE status IN ('mulai','berlangsung')"
+        ).fetchall()]
+
+    if aksi == "reset" and nik:
+        _reset_satu(nik)
+    elif aksi == "reset_all":
+        for n in _get_aktif_niks():
+            _reset_satu(n)
+    elif aksi == "plus5" and nik:
+        row = conn.execute(
+            "SELECT id FROM sesi_ujian WHERE nik=? AND status IN ('mulai','berlangsung')", (nik,)
+        ).fetchone()
+        if row: _geser_waktu(row["id"], -300)   # mundurkan mulai_at → sisa bertambah
+    elif aksi == "minus5" and nik:
+        row = conn.execute(
+            "SELECT id FROM sesi_ujian WHERE nik=? AND status IN ('mulai','berlangsung')", (nik,)
+        ).fetchone()
+        if row: _geser_waktu(row["id"], 300)    # majukan mulai_at → sisa berkurang
+    elif aksi == "selesai5" and nik:
+        row = conn.execute(
+            "SELECT id FROM sesi_ujian WHERE nik=? AND status IN ('mulai','berlangsung')", (nik,)
+        ).fetchone()
+        if row: _selesai_5_menit(row["id"])
+    elif aksi == "plus5_all":
+        for sid in _get_aktif_ids(): _geser_waktu(sid, -300)
+    elif aksi == "minus5_all":
+        for sid in _get_aktif_ids(): _geser_waktu(sid, 300)
+    elif aksi == "selesai5_all":
+        for sid in _get_aktif_ids():
+            row = conn.execute("SELECT mulai_at, status FROM sesi_ujian WHERE id=?", (sid,)).fetchone()
+            if row and row["mulai_at"]:
+                elapsed = (now - datetime.fromisoformat(row["mulai_at"])).total_seconds()
+                sisa = max(0, DURASI_DETIK - int(elapsed))
+                if sisa > 300:  # hanya yang sisa > 5 menit
+                    _selesai_5_menit(sid)
+    elif aksi == "tutup_habis":
+        # Selesaikan semua sesi berlangsung yang waktunya sudah habis
+        rows = conn.execute(
+            "SELECT id, mulai_at FROM sesi_ujian WHERE status='berlangsung' AND mulai_at IS NOT NULL"
+        ).fetchall()
+        now_str = now.strftime("%Y-%m-%d %H:%M:%S")
+        for row in rows:
+            elapsed = (now - datetime.fromisoformat(row["mulai_at"])).total_seconds()
+            if elapsed >= DURASI_DETIK:
+                skor = hitung_skor(row["id"])
+                conn.execute(
+                    "UPDATE sesi_ujian SET status='selesai', selesai_at=?, skor=? WHERE id=?",
+                    (now_str, skor, row["id"])
+                )
+
+    conn.commit()
+    conn.close()
+    return jsonify({"ok": True})
+
+
+# --- Admin: reset sesi untuk testing ---
 @app.route("/api/admin/reset_sesi", methods=["POST"])
 def admin_reset_sesi():
     err = require_admin()

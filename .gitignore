@@ -8,10 +8,18 @@ app/build/
 app/dist/
 *.spec.bak
 
-# Runtime data (dibuat otomatis saat jalan)
+# Runtime data Flask (dibuat otomatis saat jalan)
 app/tes_kompetensi.db
 app/.secret_key
 app/admin_token.txt
+
+# Runtime data PHP (dibuat otomatis saat jalan)
+app-php/tes_kompetensi.db
+app-php/.secret_key
+app-php/admin_token.txt
+
+# Static assets PHP (symlink ke app/static)
+app-php/static
 
 # macOS
 .DS_Store

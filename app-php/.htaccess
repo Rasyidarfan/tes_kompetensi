@@ -1,0 +1,9 @@
+Options -Indexes
+RewriteEngine On
+
+# Izinkan akses ke file statis (css, js, gambar, font)
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Semua request lain ke index.php
+RewriteRule ^ index.php [L]
