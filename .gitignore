@@ -18,8 +18,5 @@ app-php/tes_kompetensi.db
 app-php/.secret_key
 app-php/admin_token.txt
 
-# Static assets PHP (symlink ke app/static)
-app-php/static
-
 # macOS
 .DS_Store
