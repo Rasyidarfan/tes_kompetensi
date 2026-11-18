@@ -44,6 +44,11 @@ ADMIN_PASSWORD_HASH = "b73846dd535927acb39ffca85c45f41197d0380b1477e3448a041b9b9
 
 # Token statis — dikirim via header X-Admin-Token, disimpan di localStorage browser
 ADMIN_TOKEN = hashlib.sha256(b"admin-token-" + app.secret_key).hexdigest()
+app.config["ADMIN_TOKEN"] = ADMIN_TOKEN
+
+# Halaman pendaftaran calon mitra (/daftar) + API admin pendaftar
+from pendaftaran import bp as pendaftaran_bp, init_pendaftaran
+app.register_blueprint(pendaftaran_bp)
 
 def require_admin():
     token = request.headers.get("X-Admin-Token", "")
@@ -1153,6 +1158,7 @@ def admin_soal_import():
 if __name__ == "__main__":
     import socket
     init_db()
+    init_pendaftaran()
 
     # Scan port 8000-8080, pakai yang pertama kosong
     def cari_port(start=8000, end=8080):

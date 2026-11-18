@@ -15,6 +15,7 @@ Tersedia dalam dua versi: **Python/Flask** (`app/`) dan **PHP** (`app-php/`), de
 - **Sinkronisasi** — impor data peserta dari API BPS (mitra-api.bps.go.id)
 - **QR Code** — halaman full-screen `/qr` untuk menampilkan URL server ke peserta *(Flask only)*
 - **Auto port** — scan otomatis port 8000–8080 saat startup *(Flask only)*
+- **Pendaftaran calon mitra** — form `/daftar`: biodata, alamat + tagging GPS, pasfoto/KTP/ijazah, rekening bank, perangkat (HP/motor/laptop), 2 pertanyaan esai, dan pilihan lokasi tugas per distrik (Jayawijaya, Mamberamo Tengah, Yalimo) beserta alasannya. Pendaftar otomatis masuk daftar peserta tes. Admin: menu *Pendaftar Online* (detail, berkas, hapus, unduh CSV) *(Flask only)*
 
 ---
 
@@ -137,6 +138,14 @@ define('DURASI_DETIK',   45 * 60);
 define('MAX_KESEMPATAN', 2);
 define('SOAL_PER_UJIAN', 30);
 ```
+
+**Pendaftaran** — `pendaftaran.py`:
+- Daftar kabupaten/distrik pilihan lokasi tugas ada di `static/wilayah.json` (kode Kemendagri; sumber wilayah.id).
+- Berkas pendaftar disimpan di folder `berkas_pendaftar/<NIK>/` di samping database.
+- Env `PUBLIK_DAFTAR_HOSTS` (opsional, dipisah koma): hostname publik yang **hanya** boleh mengakses `/daftar`
+  (admin & tes jadi 404 di hostname itu). Contoh: `PUBLIK_DAFTAR_HOSTS=rekrutmen.bps9702.com`.
+- Tombol GPS butuh halaman https (atau localhost); lewat http biasa peserta mengisi koordinat manual.
+- Opsional: `pip install pillow-heif` agar foto HEIC dari iPhone bisa dibaca.
 
 ---
 

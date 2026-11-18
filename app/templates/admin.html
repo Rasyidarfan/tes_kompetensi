@@ -257,6 +257,7 @@ tr:hover td{background:#f8fafc}
     <div class="nav-item active" onclick="tab('dashboard',this)">Dashboard</div>
     <div class="nav-item" onclick="tab('aktif',this)">Sedang Ujian <span id="nav-aktif-badge"></span></div>
     <div class="nav-item" onclick="tab('peserta',this)">Data Peserta</div>
+    <div class="nav-item" onclick="tab('pendaftar',this);muatPendaftar()">Pendaftar Online</div>
     <div class="nav-item" onclick="tab('log',this)">Log Perubahan</div>
     <div class="nav-item" onclick="tab('rekap',this)">Rekap Nilai</div>
     <div class="nav-item" onclick="tab('soal',this)">Bank Soal</div>
@@ -523,6 +524,25 @@ tr:hover td{background:#f8fafc}
         </div>
       </div>
 
+      <!-- ── PENDAFTAR ONLINE ── -->
+      <div class="panel" id="tab-pendaftar">
+        <div class="card">
+          <div class="card-head">Pendaftar Online (<span id="pd-count">…</span>)
+            <span style="flex:1"></span>
+            <a href="/daftar" target="_blank" class="btn">Buka form ↗</a>
+            <button class="btn" onclick="unduhPendaftarCsv()">Unduh CSV</button>
+            <button class="btn" onclick="muatPendaftar()">Muat ulang</button>
+          </div>
+          <div class="search-wrap"><input type="text" id="pd-cari" placeholder="Cari nama, NIK, atau distrik…" oninput="renderPendaftar()"></div>
+          <div class="tbl-wrap">
+            <table id="tbl-pendaftar">
+              <thead><tr><th>#</th><th>Foto</th><th>Nama / NIK</th><th>Pendidikan</th><th>HP · Motor · Laptop</th><th>Lokasi tugas</th><th>Nilai tes</th><th>Aksi</th></tr></thead>
+              <tbody><tr><td colspan="8" style="color:#94a3b8">Memuat…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /shell -->
@@ -544,6 +564,15 @@ tr:hover td{background:#f8fafc}
       <button class="btn" onclick="tutupKonflik()">Batal</button>
       <button class="btn btn-primary" onclick="selesaikanImport()">Terapkan</button>
     </div>
+  </div>
+</div>
+
+<!-- Modal pendaftar -->
+<div class="modal-bg" id="pd-modal-bg" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" style="max-width:820px">
+    <h3 id="pd-modal-title"></h3>
+    <div id="pd-modal-body" style="font-size:13px"></div>
+    <div class="modal-foot"><button class="btn" onclick="document.getElementById('pd-modal-bg').classList.remove('open')">Tutup</button></div>
   </div>
 </div>
 
@@ -1449,5 +1478,102 @@ new Chart(document.getElementById('c-waktu').getContext('2d'), {
 });
 </script>
 {% endif %}
+
+<style>
+.pd-thumb{width:44px;height:56px;object-fit:cover;border-radius:6px;background:#f1f5f9;display:block}
+.pd-grid{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;margin-bottom:14px}
+.pd-grid div:nth-child(odd){color:#64748b}
+.pd-imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.pd-imgs figure{margin:0;text-align:center;font-size:11px;color:#64748b}
+.pd-imgs img{width:100%;max-height:220px;object-fit:contain;background:#f8fafc;border-radius:8px;cursor:zoom-in}
+.pd-sec{font-weight:700;margin:14px 0 6px;color:#1B2B6B}
+.pd-esai{white-space:pre-wrap;background:#f8fafc;border-radius:8px;padding:10px}
+.pd-tag{display:inline-block;background:#EEF2FF;border-radius:99px;padding:1px 8px;margin:1px;font-size:11px}
+</style>
+<script>
+let PD = [];
+const PD_LABEL = {pasfoto:'Pasfoto', foto_ktp:'KTP', foto_ijazah:'Ijazah'};
+const pdUrl = {};
+function pdEsc(s){ return s == null ? '' : String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+async function pdBerkas(id, jenis){
+  const k = id + '/' + jenis;
+  if (!pdUrl[k]) {
+    pdUrl[k] = fetch(`/api/admin/pendaftar/${id}/berkas/${jenis}`, {headers:{'X-Admin-Token':ADMIN_TOKEN}})
+      .then(r => r.ok ? r.blob() : null).then(b => b ? URL.createObjectURL(b) : null);
+  }
+  return pdUrl[k];
+}
+async function muatPendaftar(){
+  const r = await fetch('/api/admin/pendaftar', {headers:{'X-Admin-Token':ADMIN_TOKEN}});
+  PD = r.ok ? await r.json() : [];
+  document.getElementById('pd-count').textContent = PD.length;
+  renderPendaftar();
+}
+function yt(v, y, t){ return v == null ? '-' : (v ? '✅ ' + y : '❌ ' + t); }
+function renderPendaftar(){
+  const q = (document.getElementById('pd-cari').value || '').toLowerCase();
+  const tb = document.querySelector('#tbl-pendaftar tbody');
+  const rows = PD.filter(p => !q || (p.nama + ' ' + p.nik + ' ' + p.penugasan.map(t => t.distrik + ' ' + t.kabupaten).join(' ')).toLowerCase().includes(q));
+  if (!rows.length){ tb.innerHTML = '<tr><td colspan="8" style="color:#94a3b8">Belum ada pendaftar.</td></tr>'; return; }
+  tb.innerHTML = rows.map(p => {
+    const no = PD.indexOf(p) + 1;
+    const kab = {}; p.penugasan.forEach(t => kab[t.kabupaten] = (kab[t.kabupaten] || 0) + 1);
+    return `<tr>
+      <td>${no}</td>
+      <td><img class="pd-thumb" data-id="${p.id}" alt=""></td>
+      <td><strong>${pdEsc(p.nama)}</strong><br><span style="font-family:monospace;font-size:11px">${pdEsc(p.nik)}</span><br><span style="font-size:11px;color:#94a3b8">${pdEsc(p.no_telp)} · ${pdEsc(p.dibuat)}</span></td>
+      <td>${pdEsc(p.pendidikan)}<br><span style="font-size:11px;color:#94a3b8">${pdEsc(p.jns_kelamin)}</span></td>
+      <td style="font-size:12px">${p.hp_android ? '📱 ' + pdEsc((p.hp_merk||'') + ' ' + (p.hp_tipe||'')) : '📱 ❌'}<br>🏍 ${p.punya_motor ? 'punya' : '—'} / ${p.bisa_motor ? 'bisa' : 'tdk bisa'}<br>💻 ${p.punya_laptop ? 'punya' : '—'} / ${p.bisa_komputer ? 'bisa' : 'tdk bisa'}</td>
+      <td style="font-size:12px">${Object.entries(kab).map(([k,n]) => `<span class="pd-tag">${pdEsc(k)}: ${n}</span>`).join(' ')}</td>
+      <td>${p.skor_tertinggi != null ? '<strong>' + p.skor_tertinggi + '</strong>' : '-'}</td>
+      <td style="white-space:nowrap"><button class="btn" onclick="detailPendaftar(${p.id})">Detail</button>
+        <button class="btn btn-danger" onclick="hapusPendaftar(${p.id})">Hapus</button></td></tr>`;
+  }).join('');
+  tb.querySelectorAll('img.pd-thumb').forEach(async img => { const u = await pdBerkas(img.dataset.id, 'pasfoto'); if (u) img.src = u; });
+}
+async function detailPendaftar(id){
+  const p = PD.find(x => x.id === id); if (!p) return;
+  document.getElementById('pd-modal-title').textContent = p.nama + ' — ' + p.nik;
+  const maps = `https://www.google.com/maps?q=${p.latitude},${p.longitude}`;
+  const baris = [
+    ['Tempat, tgl lahir', `${p.tempat_lahir}, ${p.tgl_lahir}`], ['Jenis kelamin', p.jns_kelamin], ['Agama', p.agama],
+    ['Status kawin', p.status_kawin], ['Pendidikan', p.pendidikan + (p.jurusan ? ' — ' + p.jurusan : '')], ['Pekerjaan', p.pekerjaan],
+    ['No HP / WA', p.no_telp], ['Email', p.email || '-'], ['Alamat', p.alamat],
+    ['Lokasi GPS', `<a href="${maps}" target="_blank" rel="noopener">${p.latitude}, ${p.longitude}</a> <span style="color:#94a3b8">(${p.sumber_lokasi}${p.akurasi_m != null ? ', ±' + p.akurasi_m + ' m' : ''})</span>`],
+    ['Bank', `${p.bank} · ${p.no_rekening} · a.n. ${p.nama_rekening}`],
+    ['HP Android', p.hp_android ? `Memiliki — ${p.hp_merk} ${p.hp_tipe}${p.hp_ram ? ', RAM ' + p.hp_ram + ' GB' : ''}` : 'Tidak memiliki'],
+    ['Kendaraan bermotor', yt(p.punya_motor, 'Memiliki', 'Tidak memiliki')], ['Bisa mengendarai motor', yt(p.bisa_motor, 'Bisa', 'Tidak bisa')],
+    ['Laptop', yt(p.punya_laptop, 'Mempunyai', 'Tidak mempunyai')], ['Bisa komputer', yt(p.bisa_komputer, 'Bisa', 'Tidak bisa')],
+    ['Waktu daftar', p.dibuat], ['Nilai tes', p.skor_tertinggi ?? '-'],
+  ];
+  const lok = p.penugasan.map(t => `<tr><td>${pdEsc(t.kabupaten)}</td><td>${pdEsc(t.distrik)}</td><td>${t.alasan.map(a => `<span class="pd-tag">${pdEsc(a)}</span>`).join('')}${t.lainnya ? ' ' + pdEsc(t.lainnya) : ''}</td></tr>`).join('');
+  document.getElementById('pd-modal-body').innerHTML = `
+    <div class="pd-imgs">${['pasfoto','foto_ktp','foto_ijazah'].map(j => `<figure><img id="pdimg-${j}" alt=""><a id="pdlink-${j}" target="_blank" style="display:none">buka berkas</a><figcaption>${PD_LABEL[j]}</figcaption></figure>`).join('')}</div>
+    <div class="pd-grid">${baris.map(([k,v]) => `<div>${k}</div><div>${k === 'Lokasi GPS' ? v : pdEsc(v)}</div>`).join('')}</div>
+    <div class="pd-sec">Apa yang diketahui tentang BPS dan BPS Kabupaten Jayawijaya?</div><div class="pd-esai">${pdEsc(p.esai_bps)}</div>
+    <div class="pd-sec">Kegiatan BPS yang diketahui</div><div class="pd-esai">${pdEsc(p.esai_kegiatan)}</div>
+    <div class="pd-sec">Bersedia ditugaskan di (${p.penugasan.length} distrik)</div>
+    <table><thead><tr><th>Kabupaten</th><th>Distrik</th><th>Alasan</th></tr></thead><tbody>${lok}</tbody></table>`;
+  document.getElementById('pd-modal-bg').classList.add('open');
+  for (const j of ['pasfoto','foto_ktp','foto_ijazah']){
+    const u = await pdBerkas(id, j); if (!u) continue;
+    const blobType = (await fetch(u).then(r => r.blob())).type;
+    if (blobType === 'application/pdf'){ const a = document.getElementById('pdlink-' + j); a.href = u; a.style.display = ''; a.textContent = '📄 buka PDF'; document.getElementById('pdimg-' + j).remove(); }
+    else { const img = document.getElementById('pdimg-' + j); img.src = u; img.onclick = () => window.open(u); }
+  }
+}
+async function hapusPendaftar(id){
+  const p = PD.find(x => x.id === id); if (!p) return;
+  if (!confirm(`Hapus data pendaftaran ${p.nama} (${p.nik}) beserta berkasnya?\nData peserta tes & nilainya tidak ikut terhapus.`)) return;
+  const r = await fetch('/api/admin/pendaftar/' + id, {method:'DELETE', headers:{'X-Admin-Token':ADMIN_TOKEN}});
+  if (r.ok) muatPendaftar(); else alert('Gagal menghapus');
+}
+async function unduhPendaftarCsv(){
+  const r = await fetch('/api/admin/pendaftar.csv', {headers:{'X-Admin-Token':ADMIN_TOKEN}});
+  if (!r.ok) return alert('Gagal mengunduh');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(await r.blob());
+  a.download = (r.headers.get('Content-Disposition') || '').match(/filename=([^;]+)/)?.[1] || 'pendaftar.csv'; a.click();
+}
+</script>
 </body>
 </html>
