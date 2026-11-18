@@ -21,6 +21,8 @@ a = Analysis(
         'PIL.Image',
         'PIL.ImageDraw',
         'PIL.ImageFont',
+        'PIL.ImageOps',
+        'pendaftaran',
     ],
     hookspath=[],
     hooksconfig={},

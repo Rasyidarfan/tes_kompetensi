@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pendaftaran Calon Mitra — BPS Kabupaten Jayawijaya</title>
+<style>
+@font-face{font-family:'Montserrat';font-weight:800;font-display:swap;src:url('/static/fonts/montserrat-800.woff2') format('woff2')}
+@font-face{font-family:'Nunito';font-weight:100 900;font-display:swap;src:url('/static/fonts/nunito.woff2') format('woff2')}
+:root{--navy:#1B2B6B;--navy-700:#243485;--gold:#F5C518;--gold-50:#FFF8DC;--ink:#111827;--g6:#6B7280;--g5:#9AA1AC;--g3:#D1D5DB;--g2:#E5E7EB;--g1:#F3F4F6;--lb:#EEF2FF;--ok:#1F9D55;--err:#DC2626;--r:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',Arial,system-ui,sans-serif;font-size:16px;line-height:1.5;color:var(--ink);background:#F8F9FF;-webkit-font-smoothing:antialiased}
+.header{background:var(--navy);color:#fff;padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header img{height:34px}
+.header small{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.header b{font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:16px}
+.progress{height:4px;background:#ffffff22;position:absolute;left:0;right:0;bottom:0}
+.progress i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
+.wrap{max-width:760px;margin:0 auto;padding:18px 14px 120px}
+.intro{background:var(--gold-50);border:1px solid #F5E3A0;border-radius:var(--r);padding:12px 14px;font-size:14px;margin-bottom:16px}
+.card{background:#fff;border:1px solid var(--g2);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:0 1px 3px rgba(17,24,39,.06)}
+.card h2{font-family:'Montserrat',Arial,sans-serif;font-weight:800;font-size:16px;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card h2 .n{background:var(--navy);color:#fff;border-radius:99px;width:24px;height:24px;font-size:12px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.card .sub{font-size:13px;color:var(--g6);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.full{grid-column:1/-1}
+.g3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+label.l{display:block;font-size:13px;font-weight:700;color:#374151;margin-bottom:4px}
+label.l .w{color:var(--err)}
+input[type=text],input[type=tel],input[type=email],input[type=date],input[type=number],select,textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1.5px solid var(--g3);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy-700);box-shadow:0 0 0 3px #3A4DA822}
+.hint{font-size:12px;color:var(--g6);margin-top:3px}
+.invalid{border-color:var(--err)!important;background:#FEF2F2!important}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg label{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--g3);border-radius:99px;padding:7px 14px;cursor:pointer;font-size:14px;user-select:none;background:#fff}
+.seg input{accent-color:var(--navy)}
+.seg label:has(input:checked){border-color:var(--navy);background:var(--lb);font-weight:700}
+.seg.invalid{border:none!important;background:none!important}
+.seg.invalid label{border-color:var(--err)}
+/* GPS */
+.gps{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:inherit;font-weight:700;border:none;border-radius:8px;padding:10px 16px;cursor:pointer;font-size:14px}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-line{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-gold{background:var(--gold);color:var(--navy);font-size:16px;padding:14px 20px;width:100%}
+.btn:disabled{opacity:.6;cursor:wait}
+.gps-out{font-size:14px;padding:10px 12px;border-radius:8px;background:var(--g1);flex:1;min-width:220px}
+.gps-out.ok{background:#ECFDF3;color:#14532D}
+.gps-out.bad{background:#FEF2F2;color:#991B1B}
+.gps-out a{color:inherit;font-weight:700}
+.manual{display:none;margin-top:10px}
+.manual.show{display:block}
+/* upload */
+.ups{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:600px){.ups{grid-template-columns:1fr}}
+.up{border:2px dashed var(--g3);border-radius:12px;padding:10px;text-align:center;cursor:pointer;position:relative;background:#FAFBFF;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.up input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.up img{max-width:100%;max-height:150px;border-radius:6px;object-fit:contain}
+.up .t{font-weight:700;font-size:14px;color:var(--navy)}
+.up .s{font-size:12px;color:var(--g6)}
+.up.has{border-style:solid;border-color:var(--ok);background:#F6FEF9}
+.up.invalid{border-color:var(--err)}
+/* tree */
+.tree-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.tree-tools input{flex:1;min-width:180px}
+.kab{border:1px solid var(--g2);border-radius:10px;margin-bottom:8px;overflow:hidden}
+.kab-h{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--lb);cursor:pointer;user-select:none}
+.kab-h .car{width:18px;transition:transform .15s;color:var(--navy);font-weight:900}
+.kab.open .kab-h .car{transform:rotate(90deg)}
+.kab-h b{flex:1;color:var(--navy)}
+.kab-h .cnt{font-size:12px;background:#fff;border-radius:99px;padding:1px 9px;color:var(--g6)}
+.kab-h .cnt.on{background:var(--navy);color:#fff}
+.kab-b{display:none;padding:6px 10px 10px 34px}
+.kab.open .kab-b{display:block}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--navy);flex:none}
+.dis{border-bottom:1px solid var(--g1);padding:7px 0}
+.dis:last-child{border:none}
+.dis>label{display:flex;align-items:center;gap:10px;cursor:pointer}
+.dis.hide{display:none}
+.alasan{display:none;margin:8px 0 4px 28px;padding:10px;background:var(--gold-50);border-radius:8px}
+.dis.on .alasan{display:block}
+.alasan .q{font-size:12px;font-weight:700;color:#7A5B00;margin-bottom:6px}
+.alasan .seg label{padding:5px 11px;font-size:13px}
+.alasan input[type=text]{margin-top:8px;font-size:14px;padding:8px 10px}
+.alasan.invalid{outline:2px solid var(--err)}
+.ringkas{margin-top:12px;font-size:14px;padding:10px 12px;background:var(--g1);border-radius:8px}
+/* errors / done */
+.err-box{display:none;position:fixed;left:12px;right:12px;bottom:84px;max-width:740px;margin:0 auto;background:var(--err);color:#fff;padding:12px 14px;border-radius:10px;font-weight:700;z-index:40;box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.foot{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--g2);padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:30}
+.foot .in{max-width:760px;margin:0 auto}
+.done{display:none;text-align:center;padding:40px 18px}
+.done .ic{width:72px;height:72px;border-radius:99px;background:#ECFDF3;color:var(--ok);font-size:40px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.done h2{font-family:'Montserrat',Arial,sans-serif;color:var(--navy);margin-bottom:8px}
+.done a{display:inline-block;margin-top:18px;text-decoration:none}
+.hp{position:absolute;left:-9999px}
+</style>
+</head>
+<body>
+<div class="header">
+  <img src="/static/logo.png" alt="BPS">
+  <div><small>BPS Kabupaten Jayawijaya</small><b>Pendaftaran Calon Mitra Statistik</b></div>
+  <div class="progress"><i id="prog"></i></div>
+</div>
+
+<div class="wrap" id="wrap">
+<form id="f" novalidate autocomplete="on">
+  <div class="intro">Isi semua data dengan benar sesuai KTP. Kolom bertanda <b style="color:var(--err)">*</b> wajib diisi.
+    {% if publik %}Setelah mendaftar, simpan NIK-mu: NIK yang sama dipakai saat tes kompetensi.{% else %}Setelah mendaftar, kamu bisa langsung mengikuti tes kompetensi di halaman <a href="/">tes</a> dengan NIK yang sama.{% endif %}</div>
+  <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+  <!-- 1. Biodata -->
+  <div class="card">
+    <h2><span class="n">1</span>Data diri</h2>
+    <div class="sub">Sesuai KTP.</div>
+    <div class="grid">
+      <div class="full"><label class="l" for="nama">Nama lengkap <span class="w">*</span></label>
+        <input type="text" id="nama" name="nama" required maxlength="120" autocomplete="name"></div>
+      <div class="full"><label class="l" for="nik">NIK <span class="w">*</span></label>
+        <input type="text" id="nik" name="nik" required inputmode="numeric" maxlength="16" pattern="\d{16}" placeholder="16 digit angka">
+        <div class="hint" id="nik-hint">16 digit sesuai KTP</div></div>
+      <div><label class="l" for="tempat_lahir">Tempat lahir <span class="w">*</span></label>
+        <input type="text" id="tempat_lahir" name="tempat_lahir" required maxlength="80"></div>
+      <div><label class="l" for="tgl_lahir">Tanggal lahir <span class="w">*</span></label>
+        <input type="date" id="tgl_lahir" name="tgl_lahir" required min="1950-01-01"></div>
+      <div class="full"><label class="l">Jenis kelamin <span class="w">*</span></label>
+        <div class="seg" data-req="jns_kelamin">{% for x in jk %}<label><input type="radio" name="jns_kelamin" value="{{x}}">{{x}}</label>{% endfor %}</div></div>
+      <div><label class="l" for="agama">Agama <span class="w">*</span></label>
+        <select id="agama" name="agama" required><option value="">— pilih —</option>{% for x in agama %}<option>{{x}}</option>{% endfor %}</select></div>
+      <div><label class="l" for="status_kawin">Status perkawinan <span class="w">*</span></label>
+        <select id="status_kawin" name="status_kawin" required><option value="">— pilih —</option>{% for x in status_kawin %}<option>{{x}}</option>{% endfor %}</select></div>
+      <div><label class="l" for="pendidikan">Pendidikan terakhir <span class="w">*</span></label>
+        <select id="pendidikan" name="pendidikan" required><option value="">— pilih —</option>{% for x in pendidikan %}<option>{{x}}</option>{% endfor %}</select></div>
+      <div><label class="l" for="jurusan">Jurusan</label>
+        <input type="text" id="jurusan" name="jurusan" maxlength="100" placeholder="opsional"></div>
+      <div class="full"><label class="l" for="pekerjaan">Pekerjaan saat ini <span class="w">*</span></label>
+        <input type="text" id="pekerjaan" name="pekerjaan" required maxlength="100" placeholder="mis. Mahasiswa, Wiraswasta, Belum bekerja"></div>
+      <div><label class="l" for="no_telp">Nomor HP / WhatsApp <span class="w">*</span></label>
+        <input type="tel" id="no_telp" name="no_telp" required maxlength="20" autocomplete="tel" placeholder="08xxxxxxxxxx"></div>
+      <div><label class="l" for="email">Email</label>
+        <input type="email" id="email" name="email" maxlength="120" autocomplete="email" placeholder="opsional"></div>
+    </div>
+  </div>
+
+  <!-- 2. Alamat + GPS -->
+  <div class="card">
+    <h2><span class="n">2</span>Alamat rumah &amp; lokasi GPS</h2>
+    <div class="sub">Tekan tombol <b>Ambil lokasi GPS</b> saat kamu berada <b>di rumah</b>, lalu izinkan akses lokasi.</div>
+    <div class="grid">
+      <div class="full"><label class="l" for="alamat">Alamat rumah lengkap <span class="w">*</span></label>
+        <textarea id="alamat" name="alamat" required maxlength="500" style="min-height:80px" placeholder="Jalan/kompleks, RT/RW, kampung/kelurahan, distrik"></textarea></div>
+      <div class="full">
+        <label class="l">Tagging lokasi rumah <span class="w">*</span></label>
+        <div class="gps">
+          <button type="button" class="btn btn-navy" id="btn-gps">📍 Ambil lokasi GPS</button>
+          <div class="gps-out" id="gps-out">Belum ada lokasi.</div>
+        </div>
+        <div class="hint"><a href="#" id="tgl-manual">Isi koordinat manual</a> (misal dari Google Maps: tekan lama titik rumah, salin angkanya).</div>
+        <div class="manual" id="manual">
+          <input type="text" id="koord" placeholder="-4.0960, 138.9480" inputmode="decimal">
+          <div class="hint">Format: latitude, longitude</div>
+        </div>
+        <input type="hidden" name="latitude" id="lat"><input type="hidden" name="longitude" id="lon">
+        <input type="hidden" name="akurasi" id="akurasi"><input type="hidden" name="sumber_lokasi" id="sumber">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Berkas -->
+  <div class="card">
+    <h2><span class="n">3</span>Unggah berkas</h2>
+    <div class="sub">Foto harus jelas dan terbaca. Foto otomatis diperkecil sebelum dikirim.</div>
+    <div class="ups">
+      <label class="up" data-f="pasfoto"><input type="file" name="pasfoto" accept="image/*">
+        <span class="t">Pasfoto <span style="color:var(--err)">*</span></span><span class="s">Wajah terlihat jelas</span></label>
+      <label class="up" data-f="foto_ktp"><input type="file" name="foto_ktp" accept="image/*">
+        <span class="t">Foto KTP <span style="color:var(--err)">*</span></span><span class="s">Seluruh KTP terbaca</span></label>
+      <label class="up" data-f="foto_ijazah"><input type="file" name="foto_ijazah" accept="image/*,application/pdf">
+        <span class="t">Foto ijazah terakhir <span style="color:var(--err)">*</span></span><span class="s">Foto atau PDF</span></label>
+    </div>
+  </div>
+
+  <!-- 4. Bank -->
+  <div class="card">
+    <h2><span class="n">4</span>Rekening bank</h2>
+    <div class="sub">Untuk pembayaran honor. Rekening atas nama sendiri.</div>
+    <div class="grid">
+      <div class="full"><label class="l">Bank <span class="w">*</span></label>
+        <div class="seg"><label><input type="radio" name="bank_pilih" value="BRI" checked>Bank BRI</label>
+          <label><input type="radio" name="bank_pilih" value="lain">Bank lainnya</label></div>
+        <input type="text" id="bank_lain" maxlength="60" placeholder="Tulis nama bank (mis. Bank Papua, Mandiri, BNI)" style="display:none;margin-top:8px"></div>
+      <div><label class="l" for="no_rekening">Nomor rekening <span class="w">*</span></label>
+        <input type="text" id="no_rekening" name="no_rekening" required inputmode="numeric" maxlength="25"></div>
+      <div><label class="l" for="nama_rekening">Nama pemilik rekening <span class="w">*</span></label>
+        <input type="text" id="nama_rekening" name="nama_rekening" required maxlength="120"></div>
+    </div>
+  </div>
+
+  <!-- 5. Perangkat -->
+  <div class="card">
+    <h2><span class="n">5</span>Perangkat &amp; kemampuan</h2>
+    <div class="sub">&nbsp;</div>
+    <div class="grid">
+      <div class="full"><label class="l">Kepemilikan HP Android <span class="w">*</span></label>
+        <div class="seg" data-req="hp_android"><label><input type="radio" name="hp_android" value="1">Memiliki</label><label><input type="radio" name="hp_android" value="0">Tidak memiliki</label></div></div>
+      <div class="full grid g3" id="hp-detail" style="display:none">
+        <div><label class="l" for="hp_merk">Merk HP <span class="w">*</span></label><input type="text" id="hp_merk" name="hp_merk" maxlength="40" placeholder="Samsung"></div>
+        <div><label class="l" for="hp_tipe">Tipe HP <span class="w">*</span></label><input type="text" id="hp_tipe" name="hp_tipe" maxlength="60" placeholder="A03"></div>
+        <div><label class="l" for="hp_ram">RAM HP (GB)</label><input type="text" id="hp_ram" name="hp_ram" inputmode="decimal" maxlength="5" placeholder="4"></div>
+      </div>
+      <div><label class="l">Kepemilikan kendaraan bermotor <span class="w">*</span></label>
+        <div class="seg" data-req="punya_motor"><label><input type="radio" name="punya_motor" value="1">Memiliki</label><label><input type="radio" name="punya_motor" value="0">Tidak memiliki</label></div></div>
+      <div><label class="l">Bisa mengendarai motor <span class="w">*</span></label>
+        <div class="seg" data-req="bisa_motor"><label><input type="radio" name="bisa_motor" value="1">Bisa</label><label><input type="radio" name="bisa_motor" value="0">Tidak bisa</label></div></div>
+      <div><label class="l">Mempunyai laptop <span class="w">*</span></label>
+        <div class="seg" data-req="punya_laptop"><label><input type="radio" name="punya_laptop" value="1">Mempunyai</label><label><input type="radio" name="punya_laptop" value="0">Tidak mempunyai</label></div></div>
+      <div><label class="l">Bisa mengoperasikan komputer <span class="w">*</span></label>
+        <div class="seg" data-req="bisa_komputer"><label><input type="radio" name="bisa_komputer" value="1">Bisa</label><label><input type="radio" name="bisa_komputer" value="0">Tidak bisa</label></div></div>
+    </div>
+  </div>
+
+  <!-- 6. Esai -->
+  <div class="card">
+    <h2><span class="n">6</span>Pertanyaan esai</h2>
+    <div class="sub">Jawab dengan kata-katamu sendiri.</div>
+    <div class="grid">
+      <div class="full"><label class="l" for="esai_bps">Apa yang kamu ketahui tentang BPS dan BPS Kabupaten Jayawijaya? <span class="w">*</span></label>
+        <textarea id="esai_bps" name="esai_bps" required maxlength="4000"></textarea></div>
+      <div class="full"><label class="l" for="esai_kegiatan">Apa saja kegiatan BPS yang kamu ketahui? <span class="w">*</span></label>
+        <textarea id="esai_kegiatan" name="esai_kegiatan" required maxlength="4000"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 7. Lokasi tugas -->
+  <div class="card">
+    <h2><span class="n">7</span>Lokasi penugasan</h2>
+    <div class="sub">Jika diterima sebagai mitra, di mana saja kamu mau ditugaskan? Centang distrik, lalu pilih alasannya untuk setiap distrik.</div>
+    <div class="tree-tools">
+      <input type="text" id="cari-dis" placeholder="Cari distrik…">
+    </div>
+    <div id="tree">Memuat daftar wilayah…</div>
+    <div class="ringkas" id="ringkas">Belum ada distrik dipilih.</div>
+  </div>
+</form>
+</div>
+
+<div class="done" id="done">
+  <div class="ic">✓</div>
+  <h2>Pendaftaran berhasil</h2>
+  <p id="done-msg"></p>
+  {% if not publik %}<a href="/" class="btn btn-navy">Lanjut ke tes kompetensi →</a>{% endif %}
+</div>
+
+<div class="err-box" id="err"></div>
+<div class="foot" id="foot"><div class="in"><button type="button" class="btn btn-gold" id="kirim">Kirim pendaftaran</button></div></div>
+
+<script>
+const ALASAN = {{ alasan|tojson }};
+const $ = id => document.getElementById(id);
+const f = $('f');
+
+// ── helpers ──
+function err(msg, el){
+  const b = $('err'); b.textContent = msg; b.style.display = 'block';
+  clearTimeout(err.t); err.t = setTimeout(() => b.style.display = 'none', 6000);
+  if (el){ el.classList.add('invalid'); el.scrollIntoView({behavior:'smooth', block:'center'}); if (el.focus) el.focus({preventScroll:true}); }
+  return false;
+}
+f.addEventListener('input', e => { const s = e.target.closest('.invalid'); if (s) s.classList.remove('invalid'); e.target.classList.remove('invalid'); hitungProgres(); });
+f.addEventListener('change', hitungProgres);
+
+// NIK: angka saja
+$('nik').addEventListener('input', e => {
+  e.target.value = e.target.value.replace(/\D/g,'').slice(0,16);
+  $('nik-hint').textContent = e.target.value.length + '/16 digit';
+});
+$('no_rekening').addEventListener('input', e => e.target.value = e.target.value.replace(/[^\d]/g,''));
+$('tgl_lahir').max = new Date().toISOString().slice(0,10);
+$('nama').addEventListener('change', () => { if (!$('nama_rekening').value) $('nama_rekening').value = $('nama').value; });
+
+// Bank
+document.querySelectorAll('input[name=bank_pilih]').forEach(r => r.addEventListener('change', () => {
+  const lain = document.querySelector('input[name=bank_pilih]:checked').value === 'lain';
+  $('bank_lain').style.display = lain ? '' : 'none'; if (lain) $('bank_lain').focus();
+}));
+// HP detail
+document.querySelectorAll('input[name=hp_android]').forEach(r => r.addEventListener('change', () => {
+  $('hp-detail').style.display = r.value === '1' ? 'grid' : 'none';
+}));
+
+// ── GPS ──
+function setLokasi(lat, lon, acc, sumber){
+  $('lat').value = lat.toFixed(6); $('lon').value = lon.toFixed(6);
+  $('akurasi').value = acc != null ? Math.round(acc) : ''; $('sumber').value = sumber;
+  const o = $('gps-out'); o.className = 'gps-out ok';
+  const url = `https://www.google.com/maps?q=${lat.toFixed(6)},${lon.toFixed(6)}`;
+  o.innerHTML = `✓ ${lat.toFixed(6)}, ${lon.toFixed(6)}` + (acc != null ? ` <small>(±${Math.round(acc)} m)</small>` : ' <small>(manual)</small>')
+    + ` · <a href="${url}" target="_blank" rel="noopener">cek di peta</a>`;
+  hitungProgres();
+}
+$('btn-gps').onclick = () => {
+  const o = $('gps-out'), b = $('btn-gps');
+  if (!window.isSecureContext || !navigator.geolocation){
+    o.className = 'gps-out bad';
+    o.textContent = 'GPS tidak bisa dipakai di alamat ini (perlu https). Isi koordinat manual di bawah.';
+    $('manual').classList.add('show'); return;
+  }
+  b.disabled = true; o.className = 'gps-out'; o.textContent = 'Mencari lokasi… (pastikan GPS HP aktif)';
+  navigator.geolocation.getCurrentPosition(p => {
+    b.disabled = false; b.textContent = '📍 Ambil ulang';
+    setLokasi(p.coords.latitude, p.coords.longitude, p.coords.accuracy, 'gps');
+  }, e => {
+    b.disabled = false; o.className = 'gps-out bad';
+    o.textContent = e.code === 1 ? 'Akses lokasi ditolak. Izinkan lokasi di pengaturan browser lalu coba lagi, atau isi manual.'
+                                 : 'Lokasi tidak didapat (' + e.message + '). Coba lagi di tempat terbuka, atau isi manual.';
+    $('manual').classList.add('show');
+  }, {enableHighAccuracy:true, timeout:30000, maximumAge:0});
+};
+$('tgl-manual').onclick = e => { e.preventDefault(); $('manual').classList.toggle('show'); $('koord').focus(); };
+$('koord').addEventListener('input', e => {
+  const m = e.target.value.match(/(-?\d+(?:\.\d+)?)\s*[,; ]\s*(-?\d+(?:\.\d+)?)/);
+  if (m){ const la = +m[1], lo = +m[2]; if (Math.abs(la) <= 90 && Math.abs(lo) <= 180) setLokasi(la, lo, null, 'manual'); }
+});
+
+// ── Upload + kompres ──
+document.querySelectorAll('.up input').forEach(inp => inp.addEventListener('change', () => {
+  const box = inp.closest('.up'), file = inp.files[0];
+  box.querySelectorAll('img,.nm').forEach(x => x.remove());
+  box.classList.toggle('has', !!file); box.classList.remove('invalid');
+  if (!file) return;
+  if (file.type.startsWith('image/')){
+    const img = document.createElement('img'); img.src = URL.createObjectURL(file); box.prepend(img);
+  } else {
+    const s = document.createElement('span'); s.className = 's nm'; s.textContent = '📄 ' + file.name; box.prepend(s);
+  }
+  hitungProgres();
+}));
+async function kompres(file, sisi){
+  if (!file.type.startsWith('image/') || file.type === 'image/gif') return file;
+  try {
+    const bmp = await createImageBitmap(file, {imageOrientation:'from-image'});
+    const k = Math.min(1, sisi / Math.max(bmp.width, bmp.height));
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width*k); c.height = Math.round(bmp.height*k);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise(r => c.toBlob(r, 'image/jpeg', .85));
+    return blob && blob.size < file.size ? new File([blob], 'foto.jpg', {type:'image/jpeg'}) : file;
+  } catch(e){ return file; }   // browser tidak bisa baca (mis. HEIC) → kirim asli, server yang konversi
+}
+
+// ── Pohon wilayah ──
+let WIL = [];
+const pilih = new Map();   // kode → {kab, dis}
+function el(tag, cls, html){ const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+fetch('/static/wilayah.json').then(r => r.json()).then(data => {
+  WIL = data; const t = $('tree'); t.innerHTML = '';
+  data.forEach((k, ki) => {
+    const kab = el('div', 'kab' + (ki === 0 ? ' open' : '')); kab.dataset.kode = k.kode;
+    const h = el('div', 'kab-h', `<span class="car">›</span><input type="checkbox" class="cb-kab" aria-label="Pilih semua distrik ${esc(k.nama)}"><b>${esc(k.nama)}</b><span class="cnt">0/${k.distrik.length}</span>`);
+    h.onclick = e => { if (!e.target.classList.contains('cb-kab')) kab.classList.toggle('open'); };
+    const body = el('div', 'kab-b');
+    k.distrik.forEach(d => {
+      const row = el('div', 'dis'); row.dataset.kode = d.kode; row.dataset.nama = d.nama.toLowerCase();
+      row.innerHTML = `<label><input type="checkbox" class="cb-dis" value="${d.kode}">${esc(d.nama)}</label>
+        <div class="alasan"><div class="q">Alasan memilih ${esc(d.nama)}:</div>
+          <div class="seg">${ALASAN.map(a => `<label><input type="checkbox" class="cb-al" value="${esc(a)}">${esc(a)}</label>`).join('')}</div>
+          <input type="text" class="al-lain" maxlength="200" placeholder="Alasan lain (opsional)"></div>`;
+      body.appendChild(row);
+    });
+    kab.append(h, body); t.appendChild(kab);
+  });
+  t.addEventListener('change', e => {
+    if (e.target.classList.contains('cb-kab')){
+      const kab = e.target.closest('.kab'); kab.classList.add('open');
+      kab.querySelectorAll('.dis:not(.hide) .cb-dis').forEach(c => { c.checked = e.target.checked; tandai(c); });
+    } else if (e.target.classList.contains('cb-dis')) tandai(e.target);
+    else if (e.target.closest('.alasan')) e.target.closest('.alasan').classList.remove('invalid');
+    segarkan();
+  });
+  t.addEventListener('input', e => { if (e.target.classList.contains('al-lain')) e.target.closest('.alasan').classList.remove('invalid'); });
+});
+function tandai(cb){ cb.closest('.dis').classList.toggle('on', cb.checked); }
+function segarkan(){
+  let total = 0; const per = [];
+  document.querySelectorAll('.kab').forEach(kab => {
+    const all = kab.querySelectorAll('.cb-dis'), on = kab.querySelectorAll('.cb-dis:checked');
+    const ck = kab.querySelector('.cb-kab'); ck.checked = on.length === all.length; ck.indeterminate = on.length > 0 && on.length < all.length;
+    const c = kab.querySelector('.cnt'); c.textContent = on.length + '/' + all.length; c.classList.toggle('on', on.length > 0);
+    total += on.length; if (on.length) per.push(`${kab.querySelector('b').textContent} (${on.length})`);
+  });
+  $('ringkas').innerHTML = total ? `<b>${total} distrik dipilih:</b> ${per.map(esc).join(', ')}` : 'Belum ada distrik dipilih.';
+  hitungProgres();
+}
+$('cari-dis').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase();
+  document.querySelectorAll('.kab').forEach(kab => {
+    let ada = 0;
+    kab.querySelectorAll('.dis').forEach(d => { const m = !q || d.dataset.nama.includes(q); d.classList.toggle('hide', !m); ada += m; });
+    kab.style.display = ada ? '' : 'none'; if (q && ada) kab.classList.add('open');
+  });
+});
+function ambilPenugasan(){
+  return [...document.querySelectorAll('.dis.on')].map(d => ({
+    kode: d.dataset.kode,
+    alasan: [...d.querySelectorAll('.cb-al:checked')].map(x => x.value),
+    lainnya: d.querySelector('.al-lain').value.trim(),
+  }));
+}
+
+// ── progres ──
+function hitungProgres(){
+  const req = [...f.querySelectorAll('[required]')].filter(x => x.offsetParent);
+  let ok = req.filter(x => x.value.trim()).length, n = req.length;
+  f.querySelectorAll('.seg[data-req]').forEach(s => { n++; if (s.querySelector('input:checked')) ok++; });
+  f.querySelectorAll('.up').forEach(u => { n++; if (u.classList.contains('has')) ok++; });
+  n += 2; if ($('lat').value) ok++; if (document.querySelector('.dis.on')) ok++;
+  $('prog').style.width = Math.round(ok / n * 100) + '%';
+}
+
+// ── validasi + kirim ──
+function validasi(){
+  for (const x of f.querySelectorAll('input[required],select[required],textarea[required]')){
+    if (!x.offsetParent) continue;
+    if (!x.value.trim()) return err((x.labels[0]?.textContent || 'Kolom').replace('*','').trim() + ' wajib diisi', x);
+  }
+  if ($('nik').value.length !== 16) return err('NIK harus 16 digit', $('nik'));
+  for (const s of f.querySelectorAll('.seg[data-req]'))
+    if (!s.querySelector('input:checked')) return err(s.previousElementSibling.textContent.replace('*','').trim() + ' wajib dipilih', s);
+  if (document.querySelector('input[name=bank_pilih]:checked').value === 'lain' && !$('bank_lain').value.trim())
+    return err('Tulis nama bank', $('bank_lain'));
+  if ($('no_rekening').value.length < 6) return err('Nomor rekening tidak valid', $('no_rekening'));
+  if (document.querySelector('input[name=hp_android]:checked')?.value === '1'){
+    if (!$('hp_merk').value.trim()) return err('Merk HP wajib diisi', $('hp_merk'));
+    if (!$('hp_tipe').value.trim()) return err('Tipe HP wajib diisi', $('hp_tipe'));
+  }
+  if (!$('lat').value) return err('Ambil lokasi GPS rumah terlebih dahulu', $('btn-gps').closest('.gps'));
+  for (const u of f.querySelectorAll('.up'))
+    if (!u.classList.contains('has')) return err(u.querySelector('.t').textContent.replace('*','').trim() + ' wajib diunggah', u);
+  const tugas = ambilPenugasan();
+  if (!tugas.length) return err('Pilih minimal satu distrik lokasi penugasan', $('tree'));
+  for (const t of tugas) if (!t.alasan.length && !t.lainnya){
+    const d = document.querySelector(`.dis[data-kode="${t.kode}"]`); d.closest('.kab').classList.add('open');
+    return err('Pilih alasan untuk distrik ' + d.querySelector('label').textContent.trim(), d.querySelector('.alasan'));
+  }
+  return true;
+}
+$('kirim').onclick = async () => {
+  if (!validasi()) return;
+  const b = $('kirim'); b.disabled = true; b.textContent = 'Menyiapkan foto…';
+  try {
+    const fd = new FormData(f);
+    fd.delete('bank_pilih');
+    fd.set('bank', document.querySelector('input[name=bank_pilih]:checked').value === 'lain' ? $('bank_lain').value.trim() : 'BRI');
+    fd.set('penugasan', JSON.stringify(ambilPenugasan()));
+    const sisi = {pasfoto:900, foto_ktp:1800, foto_ijazah:2200};
+    for (const k in sisi){ const file = f.elements[k].files[0]; fd.set(k, await kompres(file, sisi[k]), file.name); }
+    b.textContent = 'Mengirim…';
+    const r = await fetch('/api/daftar', {method:'POST', body:fd});
+    let j; try { j = await r.json(); } catch(e){ j = {ok:false, msg:'Server error ' + r.status}; }
+    if (!j.ok) throw new Error(j.msg || 'Gagal mengirim');
+    $('err').style.display = 'none'; $('wrap').style.display = 'none'; $('foot').style.display = 'none';
+    $('done-msg').textContent = `Terima kasih, ${j.nama}. Data dan ${j.jumlah_lokasi} pilihan lokasi tugasmu sudah tersimpan. Gunakan NIK yang sama saat tes kompetensi.`;
+    $('done').style.display = 'block'; $('prog').style.width = '100%'; window.scrollTo(0,0);
+  } catch(e){
+    err(e.message === 'Failed to fetch' ? 'Koneksi terputus. Periksa internet lalu tekan Kirim lagi.' : e.message);
+  } finally { b.disabled = false; b.textContent = 'Kirim pendaftaran'; }
+};
+window.addEventListener('beforeunload', e => { if ($('done').style.display !== 'block' && $('nama').value) e.preventDefault(); });
+</script>
+</body>
+</html>
